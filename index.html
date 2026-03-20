@@ -31,170 +31,163 @@
     margin-bottom: 28px;
   }
 
-  /* Field rows */
-  .field-row {
-    margin-bottom: 16px;
-  }
-
-  .field-row-inline {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 16px;
-  }
-
-  .field-row-inline .field-group { flex: 1; }
-
-  .field-group { position: relative; }
+  /* ── HubSpot Form Style Overrides ── */
 
   /* Labels */
-  label {
-    display: block;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    color: #1a1a1a;
-    margin-bottom: 2px;
+  .hs-form label.hs-form-field-label,
+  .hs-form label:not(.hs-form-booleancheckbox-display):not(.hs-error-msg) {
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 12px !important;
+    letter-spacing: 0.5px !important;
+    color: #1a1a1a !important;
+    margin-bottom: 2px !important;
   }
 
-  /* Inputs */
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="number"],
-  input[type="date"],
-  select,
-  textarea {
-    width: 100%;
-    border: none;
-    border-bottom: 1.5px solid #1a1a1a;
-    background: transparent;
-    padding: 6px 0 8px;
-    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    color: #1a1a1a;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    border-bottom-color: #c8102e;
-  }
-
-  input::placeholder, textarea::placeholder {
-    color: #aaa;
-    font-weight: 400;
-  }
-
-  /* Select */
-  select {
+  /* All text inputs, selects, textareas — bottom border only */
+  .hs-form input[type="text"],
+  .hs-form input[type="email"],
+  .hs-form input[type="tel"],
+  .hs-form input[type="number"],
+  .hs-form input[type="date"],
+  .hs-form select,
+  .hs-form textarea {
+    border: none !important;
+    border-bottom: 1.5px solid #1a1a1a !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding: 6px 0 8px !important;
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #1a1a1a !important;
+    outline: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M5 6L0 0h10z' fill='%231a1a1a'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 2px center;
-    background-size: 10px;
-    padding-right: 20px;
-    cursor: pointer;
   }
 
-  /* Date input */
-  input[type="date"] {
-    color: #aaa;
-    font-weight: 400;
-  }
-  input[type="date"]:valid { color: #1a1a1a; }
-  input[type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 0.5;
-    cursor: pointer;
+  .hs-form input:focus,
+  .hs-form select:focus,
+  .hs-form textarea:focus {
+    border-bottom-color: #c8102e !important;
   }
 
-  /* Phone row with flag */
-  .phone-row {
-    display: flex;
-    align-items: center;
-    border-bottom: 1.5px solid #1a1a1a;
-    gap: 8px;
-    transition: border-color 0.2s;
-  }
-  .phone-row:focus-within { border-bottom-color: #c8102e; }
-  .phone-row .flag { font-size: 20px; flex-shrink: 0; }
-  .phone-row .divider { color: #ccc; font-size: 18px; flex-shrink: 0; }
-  .phone-row input {
-    border: none !important;
-    border-bottom: none !important;
-    padding: 6px 0 8px;
-    flex: 1;
-  }
-  .phone-row input:focus { border-bottom: none !important; }
-
-  /* Checkboxes */
-  .checkbox-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 8px;
+  .hs-form input::placeholder,
+  .hs-form textarea::placeholder {
+    color: #aaa !important;
+    font-weight: 400 !important;
   }
 
-  .checkbox-row input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
+  /* Restore select arrow */
+  .hs-form select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M5 6L0 0h10z' fill='%231a1a1a'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 2px center !important;
+    background-size: 10px !important;
+    padding-right: 20px !important;
+    cursor: pointer !important;
+  }
+
+  /* Checkbox labels */
+  .hs-form .hs-form-booleancheckbox-display,
+  .hs-form .hs-form-checkbox-display {
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    font-size: 12px !important;
+    color: #555 !important;
+  }
+
+  /* Checkbox inputs */
+  .hs-form input[type="checkbox"] {
     accent-color: #c8102e;
-    cursor: pointer;
   }
 
-  .checkbox-row label {
-    font-weight: 400;
-    text-transform: none;
-    font-size: 12px;
-    color: #555;
-    cursor: pointer;
-    margin-bottom: 0;
+  /* Field spacing */
+  .hs-form .hs-form-field {
+    margin-bottom: 16px !important;
+  }
+
+  /* Fieldset resets */
+  .hs-form fieldset {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 4px !important;
+    max-width: 100% !important;
+  }
+
+  /* Side-by-side fields */
+  .hs-form fieldset.form-columns-2 {
+    display: flex !important;
+    gap: 20px !important;
+  }
+  .hs-form fieldset.form-columns-2 .hs-form-field {
+    flex: 1 !important;
+    width: auto !important;
   }
 
   /* Textarea */
-  textarea {
-    min-height: 50px;
-    resize: vertical;
-    border-bottom: 1.5px solid #1a1a1a;
+  .hs-form textarea {
+    min-height: 50px !important;
+    resize: vertical !important;
   }
 
-  /* Buttons */
-  .button-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 28px;
+  /* Submit button */
+  .hs-form .hs-submit {
+    margin-top: 28px !important;
   }
 
-  .btn {
-    flex: 1;
-    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
-    background-color: #c8102e;
-    color: #fff;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 15px;
-    letter-spacing: 2px;
-    border: none;
-    padding: 16px 20px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+  .hs-form .hs-button.primary {
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    background-color: #c8102e !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 16px !important;
+    letter-spacing: 2px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 16px 20px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s !important;
   }
 
-  .btn:hover { background-color: #a00d24; }
-  .btn svg { width: 14px; height: 14px; fill: #fff; }
+  .hs-form .hs-button.primary:hover {
+    background-color: #a00d24 !important;
+  }
 
-  /* SMS opt-in */
-  .sms-row {
-    margin-top: 6px;
-    margin-bottom: 0;
+  /* Error messages */
+  .hs-form .hs-error-msgs label,
+  .hs-form .hs-error-msg {
+    color: #c8102e !important;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    font-size: 11px !important;
+  }
+
+  /* Hide rich text blocks */
+  .hs-form .hs-richtext { display: none !important; }
+
+  /* Phone country code dropdown */
+  .hs-form .hs-fieldtype-intl-phone .hs-input {
+    border-bottom: 1.5px solid #1a1a1a !important;
+  }
+
+  /* Remove default HubSpot form borders/backgrounds */
+  .hs-form-field > .input {
+    margin: 0 !important;
+  }
+
+  /* Legal consent if present */
+  .hs-form .legal-consent-container {
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    font-size: 11px !important;
+    color: #777 !important;
   }
 </style>
 </head>
@@ -203,246 +196,16 @@
 <div class="form-wrapper">
   <h1>Register a Lead</h1>
 
-  <form onsubmit="return false;">
-
-    <!-- Student Name (First + Last inline) -->
-    <div class="field-row-inline">
-      <div class="field-group">
-        <label for="student_first">Student First Name</label>
-        <input type="text" id="student_first" placeholder="">
-      </div>
-      <div class="field-group">
-        <label for="student_last">Student Last Name</label>
-        <input type="text" id="student_last" placeholder="">
-      </div>
-    </div>
-
-    <!-- Student Birthday -->
-    <div class="field-row" id="birthday_field">
-      <label for="birthday">Student Birthday</label>
-      <input type="date" id="birthday">
-    </div>
-
-    <!-- Checkboxes -->
-    <div class="checkbox-row">
-      <input type="checkbox" id="adult_student" onchange="
-        var bday = document.getElementById('birthday_field');
-        var showAge = document.getElementById('show_age_row');
-        var parentRow = document.getElementById('parent_name_row');
-        if(this.checked) {
-          bday.style.display = 'none';
-          showAge.style.display = 'none';
-          parentRow.style.display = 'none';
-          document.getElementById('show_age').checked = false;
-        } else {
-          bday.style.display = 'block';
-          showAge.style.display = 'flex';
-          parentRow.style.display = 'flex';
-        }
-      ">
-      <label for="adult_student">Adult Student, no age</label>
-    </div>
-    <div class="checkbox-row" id="show_age_row" style="margin-bottom: 16px;">
-      <input type="checkbox" id="show_age">
-      <label for="show_age">Show Age</label>
-    </div>
-
-    <!-- Parent/Guardian Name (First + Last inline) -->
-    <div class="field-row-inline" id="parent_name_row">
-      <div class="field-group">
-        <label for="parent_first">Parent First Name</label>
-        <input type="text" id="parent_first" placeholder="">
-      </div>
-      <div class="field-group">
-        <label for="parent_last">Parent Last Name</label>
-        <input type="text" id="parent_last" placeholder="">
-      </div>
-    </div>
-
-    <!-- Email -->
-    <div class="field-row">
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="">
-    </div>
-
-    <!-- Phone -->
-    <div class="field-row">
-      <label for="phone">Phone</label>
-      <div class="phone-row">
-        <span class="flag">&#x1F1FA;&#x1F1F8;</span>
-        <span class="divider">|</span>
-        <input type="tel" id="phone" placeholder="Phone">
-      </div>
-    </div>
-
-    <!-- Location (searchable) -->
-    <div class="field-row" id="location_wrapper" style="position: relative;">
-      <label for="location_search">Location</label>
-      <input type="text" id="location_search" placeholder="Type to search locations..." autocomplete="off">
-      <input type="hidden" id="location" name="location">
-      <div id="location_dropdown"></div>
-    </div>
-    <style>
-      #location_dropdown {
-        display: none;
-        position: absolute;
-        left: 0; right: 0; top: 100%;
-        max-height: 220px;
-        overflow-y: auto;
-        background: #fff;
-        border: 1px solid #ddd;
-        z-index: 200;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      }
-      #location_dropdown.open { display: block; }
-      #location_dropdown .loc-item {
-        padding: 9px 12px;
-        cursor: pointer;
-        font-family: 'Oswald', Arial, sans-serif;
-        font-size: 13px;
-        border-bottom: 1px solid #f0f0f0;
-      }
-      #location_dropdown .loc-item:hover,
-      #location_dropdown .loc-item.active { background: #f5f5f5; }
-      #location_dropdown .loc-empty {
-        padding: 9px 12px;
-        color: #999;
-        font-family: 'Oswald', Arial, sans-serif;
-        font-size: 13px;
-      }
-    </style>
-    <script>
-    (function() {
-      var locations = ["AR - Bentonville","AR - Fayetteville","AR - Little Rock","AZ - Ahwatukee","AZ - Arcadia","AZ - Gilbert","AZ - Goodyear/Litchfield Park","AZ - Queen Creek","AZ - Scottsdale","AZ - Tucson","CA - Alameda","CA - Berkeley","CA - Burbank","CA - Castro Valley","CA - Del Mar","CA - Eagle Rock","CA - Elk Grove","CA - Encinitas","CA - Fairfax District LA","CA - Folsom","CA - Fremont","CA - Huntington Beach","CA - Land Park","CA - Oceanside","CA - Otay Ranch","CA - Palo Alto","CA - Palos Verdes","CA - Pasadena","CA - Petaluma","CA - Pleasanton","CA - Rancho Santa Margarita","CA - Roseville","CA - Sacramento","CA - San Diego","CA - San Jose","CA - San Rafael","CA - San Ramon","CA - Santa Ana","CA - Santa Clarita","CA - Santa Rosa","CA - Scripps Ranch","CA - Silver Lake","CA - South Bay L.A.","CA - Sunnyvale","CA - Temecula","CA - Tustin","CA - Vacaville","CA - Venice","CA - Walnut Creek","CA - West LA","CA - Woodland Hills","CO - Aurora","CO - Boulder","CO - Broomfield","CO - Colorado Springs","CO - Denver","CO - Fort Collins","CO - Golden/Lakewood","CO - Highlands Ranch","CO - Littleton","CO - Loveland","CT - East Hartford","CT - Fairfield","CT - Greenwich","CT - Madison","CT - Milford","CT - New Canaan","CT - North Haven","CT - Ridgefield","CT - West Hartford","DC - Washington DC / Cleveland Park","DE - Hockessin","FL - Boca Raton","FL - Clearwater","FL - Clermont","FL - Coconut Grove","FL - Coral Gables","FL - Coral Springs","FL - Doral","FL - Fort Lauderdale","FL - Fort Myers","FL - Hollywood","FL - Lakewood Ranch","FL - Mandarin","FL - Naples","FL - North Miami","FL - North Palm Beach","FL - Oviedo","FL - Palm City","FL - Palmetto Bay","FL - South Palm Beach","FL - St. Petersburg","FL - Tampa","FL - Tampa North","FL - Valrico","FL - West Broward","FL - Winter Park","GA - Alpharetta","GA - Buckhead","GA - Buford","GA - Dunwoody","GA - East Cobb","GA - Johns Creek","GA - West Cobb","GA - Woodstock","IA - Ankeny","IA - Cedar Rapids/Marion","IA - West Des Moines","ID - Meridian","IL - Andersonville","IL - Arlington Heights","IL - Barrington","IL - Bloomington","IL - Chicago","IL - Chicago West","IL - Elgin","IL - Elmhurst","IL - Evanston","IL - Geneva","IL - Glen Ellyn","IL - Glenbrook","IL - Highwood","IL - Hinsdale","IL - Lemont","IL - Libertyville","IL - Mokena","IL - Naperville","IL - Oak Park","IL - Oswego","IL - Park Ridge","IL - Plainfield","IL - Schaumburg","IN - Carmel","IN - Fishers","IN - Fort Wayne","IN - Zionsville","KS - Blue Valley","KY - Louisville","KY - Northern Kentucky","KY - St. Matthews","LA - Baton Rouge","LA - Lafayette","LA - Metairie/New Orleans","LA - Northshore","MA - Attleboro","MA - Brookline","MA - Burlington","MA - Medford","MA - Natick","MA - Northborough","MA - Norwood/Walpole","MA - Seekonk","MA - Watertown","MD - Annapolis","MD - Columbia","MD - Gambrills","MD - Germantown MD","MD - Pikesville","MD - Rockville","MD - Silver Spring","MD - Towson","MI - Ann Arbor","MI - Canton","MI - East Lansing","MI - Farmington","MI - Grand Rapids","MI - Troy","MN - Blaine","MN - Eden Prairie","MN - Plymouth","MN - St. Paul","MO - Ballwin","MO - Kansas City","MO - Kirkwood","MO - Lee's Summit","MO - St. Peters","NC - Asheville","NC - Cary","NC - Chapel Hill","NC - Charlotte","NC - Cornelius","NC - Greensboro","NC - Holly Springs","NC - Raleigh","NC - Wake Forest","NC - Waxhaw","NC - Wilmington","NE - Omaha","NH - Nashua","NJ - Brick","NJ - Carlstadt","NJ - Chatham","NJ - Cherry Hill","NJ - Clark","NJ - Cresskill","NJ - Deptford","NJ - East Brunswick","NJ - Hoboken","NJ - Marlboro","NJ - Maywood","NJ - Montclair","NJ - Parsippany","NJ - Princeton","NJ - Randolph","NJ - Red Bank","NJ - Somerville","NJ - South Plainfield","NJ - Waldwick","NM - Albuquerque","NV - Green Valley","NV - Las Vegas West","NV - NW Las Vegas","NV - Reno","NY - Bay Ridge","NY - Beacon","NY - Bedford","NY - Briarcliff Manor","NY - Brooklyn","NY - Farmingdale","NY - Fayetteville NY","NY - Fleetwood","NY - Huntington","NY - Mamaroneck","NY - New York","NY - North Buffalo","NY - Port Jefferson","NY - Queens","NY - Riverhead","NY - Rochester NY","NY - Rockland","NY - Rockville Centre","NY - Roslyn","NY - Sayville","NY - Syosset/Oyster Bay","NY - White Plains","NY - Williamsburg","OH - Beavercreek","OH - Cincinnati","OH - Cleveland West","OH - Columbus","OH - Dublin","OH - Gahanna","OH - Highland Heights","OH - Mason","OH - Strongsville","OK - Edmond","OK - Jenks","OK - Oklahoma City","OK - Tulsa / Broken Arrow","OR - Bend","OR - Lake Oswego","OR - Portland","PA - Delco","PA - Downingtown","PA - Doylestown","PA - Easton","PA - Fort Washington","PA - Main Line","PA - Newtown","PA - Philadelphia","PA - Royersford","PA - South Hills","PA - Wexford","PA - York","SC - Fort Mill","SC - Greenville","SC - Mount Pleasant","TN - Franklin","TN - Germantown","TN - Hendersonville","TN - Knoxville","TN - Memphis","TN - Mt. Juliet","TN - Murfreesboro","TN - Nashville","TN - Wolfchase","TX - Arlington TX","TX - Austin","TX - Bryan/College Station","TX - Cedar Park","TX - Champion Forest","TX - Clear Lake","TX - Conroe","TX - Coppell","TX - Cypress","TX - Dallas","TX - Flower Mound","TX - Fort Worth","TX - Frisco","TX - Fulshear","TX - Katy","TX - Kingwood","TX - Kyle","TX - Lubbock","TX - McAllen","TX - McAllen South","TX - McKinney","TX - Memorial","TX - Midlothian TX","TX - Murphy","TX - New Braunfels","TX - North Dallas","TX - Pearland","TX - Plano","TX - Prosper","TX - Rockwall","TX - Round Rock","TX - Saginaw","TX - San Antonio","TX - Southlake/Keller","TX - Spring","TX - Sugar Land","TX - Summer Creek","TX - SW Austin","TX - The Colony","TX - The Heights","TX - The Woodlands","TX - West Houston","TX - West University Place","UT - Salt Lake City","UT - Sandy","UT - St. George","VA - Alexandria","VA - Arlington VA","VA - Ashburn","VA - Chantilly","VA - Chesapeake","VA - Fairfax VA","VA - Fredericksburg","VA - Haymarket","VA - Midlothian","VA - Short Pump","VA - Vienna","VA - Virginia Beach","VA - Woodbridge","WA - Bellevue","WA - Issaquah","WA - Kent","WA - Lynnwood","WA - Salmon Creek","WA - Seattle","WA - Seattle Downtown","WA - Spokane","WA - Vancouver WA","WA - West Seattle","WI - Brookfield","WI - Madison WI","WI - Shorewood"];
-
-      var input = document.getElementById('location_search');
-      var dd = document.getElementById('location_dropdown');
-      var hidden = document.getElementById('location');
-      var isOpen = false;
-      var debounceTimer = null;
-
-      function showDropdown(filter) {
-        var f = (filter || '').toLowerCase();
-        var matches;
-        if (!f) {
-          // No filter — show first 20 locations
-          matches = locations.slice(0, 20);
-        } else {
-          matches = locations.filter(function(l) { return l.toLowerCase().indexOf(f) !== -1; });
-          matches = matches.slice(0, 20);
-        }
-
-        dd.innerHTML = '';
-        if (matches.length === 0) {
-          dd.innerHTML = '<div class="loc-empty">No locations found</div>';
-        } else {
-          matches.forEach(function(loc) {
-            var div = document.createElement('div');
-            div.className = 'loc-item';
-            div.textContent = loc;
-            div.addEventListener('mousedown', function(e) {
-              e.preventDefault(); // Prevent blur on input
-              input.value = loc;
-              hidden.value = loc;
-              dd.classList.remove('open');
-              isOpen = false;
-            });
-            dd.appendChild(div);
-          });
-        }
-        dd.classList.add('open');
-        isOpen = true;
-      }
-
-      input.addEventListener('input', function() {
-        clearTimeout(debounceTimer);
-        var val = this.value;
-        debounceTimer = setTimeout(function() {
-          showDropdown(val);
-        }, 100);
-      });
-
-      input.addEventListener('focus', function() {
-        showDropdown(this.value);
-      });
-
-      document.addEventListener('click', function(e) {
-        if (!dd.contains(e.target) && e.target !== input) {
-          dd.classList.remove('open');
-          isOpen = false;
-        }
-      });
-    })();
-    </script>
-
-    <!-- Instrument -->
-    <div class="field-row">
-      <label for="instrument">Instrument</label>
-      <select id="instrument">
-        <option value="">Instrument</option>
-        <option>Guitar</option>
-        <option>Drums</option>
-        <option>Vocals</option>
-        <option>Bass Guitar</option>
-        <option>Keyboard</option>
-        <option>Other</option>
-      </select>
-    </div>
-
-    <!-- Area of Interest -->
-    <div class="field-row">
-      <label for="aoi">Area of Interest</label>
-      <select id="aoi">
-        <option value="">Area of Interest</option>
-        <option>Adult Program</option>
-        <option>Back to School</option>
-        <option>Camps/Workshops</option>
-        <option>Lessons</option>
-        <option>Little Wing</option>
-        <option>Online</option>
-        <option>Other</option>
-        <option>Performance Program</option>
-        <option>Rock 101</option>
-        <option>Rookies</option>
-        <option>Songwriting</option>
-        <option>Unknown</option>
-      </select>
-    </div>
-
-    <!-- Lead Source -->
-    <div class="field-row">
-      <label for="lead_source">Lead Source</label>
-      <select id="lead_source">
-        <option value="">Lead Source</option>
-        <option>Local</option>
-        <option>Referral</option>
-        <option>Special Event</option>
-        <option>Not a Lead / Duplicate Lead</option>
-        <option>Other</option>
-      </select>
-    </div>
-
-    <!-- Add Note checkbox -->
-    <div class="checkbox-row sms-row">
-      <input type="checkbox" id="add_note" onchange="document.getElementById('notes_field').style.display = this.checked ? 'block' : 'none'">
-      <label for="add_note">Add Note?</label>
-    </div>
-
-    <!-- Notes (hidden by default) -->
-    <div class="field-row" id="notes_field" style="display: none; margin-top: 12px;">
-      <label for="notes">Notes</label>
-      <textarea id="notes" placeholder="Additional details or availability notes"></textarea>
-    </div>
-
-    <!-- Button -->
-    <div class="button-row">
-      <button type="submit" class="btn">
-        Submit Lead
-        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-      </button>
-    </div>
-
-  </form>
+  <!-- HubSpot Embedded Form — pulls all fields + options from the form definition -->
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+  <script>
+    hbspt.forms.create({
+      region: "na1",
+      portalId: "50655039",
+      formId: "3016f15c-c3e1-433b-b7fc-bc713cd2d6a9",
+      css: ""
+    });
+  </script>
 </div>
 
 </body>
