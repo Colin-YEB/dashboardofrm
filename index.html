@@ -276,58 +276,103 @@
     </div>
 
     <!-- Location (searchable) -->
-    <div class="field-row" style="position: relative;">
+    <div class="field-row" id="location_wrapper" style="position: relative;">
       <label for="location_search">Location</label>
-      <input type="text" id="location_search" placeholder="Search locations..." autocomplete="off"
-        onfocus="document.getElementById('location_dropdown').style.display='block'"
-        oninput="filterLocations(this.value)">
+      <input type="text" id="location_search" placeholder="Type to search locations..." autocomplete="off">
       <input type="hidden" id="location" name="location">
-      <div id="location_dropdown" style="display:none; position:absolute; left:0; right:0; top:100%; max-height:250px; overflow-y:auto; background:#fff; border:1px solid #ddd; z-index:100; box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+      <div id="location_dropdown"></div>
     </div>
+    <style>
+      #location_dropdown {
+        display: none;
+        position: absolute;
+        left: 0; right: 0; top: 100%;
+        max-height: 220px;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #ddd;
+        z-index: 200;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      }
+      #location_dropdown.open { display: block; }
+      #location_dropdown .loc-item {
+        padding: 9px 12px;
+        cursor: pointer;
+        font-family: 'Oswald', Arial, sans-serif;
+        font-size: 13px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      #location_dropdown .loc-item:hover,
+      #location_dropdown .loc-item.active { background: #f5f5f5; }
+      #location_dropdown .loc-empty {
+        padding: 9px 12px;
+        color: #999;
+        font-family: 'Oswald', Arial, sans-serif;
+        font-size: 13px;
+      }
+    </style>
     <script>
+    (function() {
       var locations = ["AR - Bentonville","AR - Fayetteville","AR - Little Rock","AZ - Ahwatukee","AZ - Arcadia","AZ - Gilbert","AZ - Goodyear/Litchfield Park","AZ - Queen Creek","AZ - Scottsdale","AZ - Tucson","CA - Alameda","CA - Berkeley","CA - Burbank","CA - Castro Valley","CA - Del Mar","CA - Eagle Rock","CA - Elk Grove","CA - Encinitas","CA - Fairfax District LA","CA - Folsom","CA - Fremont","CA - Huntington Beach","CA - Land Park","CA - Oceanside","CA - Otay Ranch","CA - Palo Alto","CA - Palos Verdes","CA - Pasadena","CA - Petaluma","CA - Pleasanton","CA - Rancho Santa Margarita","CA - Roseville","CA - Sacramento","CA - San Diego","CA - San Jose","CA - San Rafael","CA - San Ramon","CA - Santa Ana","CA - Santa Clarita","CA - Santa Rosa","CA - Scripps Ranch","CA - Silver Lake","CA - South Bay L.A.","CA - Sunnyvale","CA - Temecula","CA - Tustin","CA - Vacaville","CA - Venice","CA - Walnut Creek","CA - West LA","CA - Woodland Hills","CO - Aurora","CO - Boulder","CO - Broomfield","CO - Colorado Springs","CO - Denver","CO - Fort Collins","CO - Golden/Lakewood","CO - Highlands Ranch","CO - Littleton","CO - Loveland","CT - East Hartford","CT - Fairfield","CT - Greenwich","CT - Madison","CT - Milford","CT - New Canaan","CT - North Haven","CT - Ridgefield","CT - West Hartford","DC - Washington DC / Cleveland Park","DE - Hockessin","FL - Boca Raton","FL - Clearwater","FL - Clermont","FL - Coconut Grove","FL - Coral Gables","FL - Coral Springs","FL - Doral","FL - Fort Lauderdale","FL - Fort Myers","FL - Hollywood","FL - Lakewood Ranch","FL - Mandarin","FL - Naples","FL - North Miami","FL - North Palm Beach","FL - Oviedo","FL - Palm City","FL - Palmetto Bay","FL - South Palm Beach","FL - St. Petersburg","FL - Tampa","FL - Tampa North","FL - Valrico","FL - West Broward","FL - Winter Park","GA - Alpharetta","GA - Buckhead","GA - Buford","GA - Dunwoody","GA - East Cobb","GA - Johns Creek","GA - West Cobb","GA - Woodstock","IA - Ankeny","IA - Cedar Rapids/Marion","IA - West Des Moines","ID - Meridian","IL - Andersonville","IL - Arlington Heights","IL - Barrington","IL - Bloomington","IL - Chicago","IL - Chicago West","IL - Elgin","IL - Elmhurst","IL - Evanston","IL - Geneva","IL - Glen Ellyn","IL - Glenbrook","IL - Highwood","IL - Hinsdale","IL - Lemont","IL - Libertyville","IL - Mokena","IL - Naperville","IL - Oak Park","IL - Oswego","IL - Park Ridge","IL - Plainfield","IL - Schaumburg","IN - Carmel","IN - Fishers","IN - Fort Wayne","IN - Zionsville","KS - Blue Valley","KY - Louisville","KY - Northern Kentucky","KY - St. Matthews","LA - Baton Rouge","LA - Lafayette","LA - Metairie/New Orleans","LA - Northshore","MA - Attleboro","MA - Brookline","MA - Burlington","MA - Medford","MA - Natick","MA - Northborough","MA - Norwood/Walpole","MA - Seekonk","MA - Watertown","MD - Annapolis","MD - Columbia","MD - Gambrills","MD - Germantown MD","MD - Pikesville","MD - Rockville","MD - Silver Spring","MD - Towson","MI - Ann Arbor","MI - Canton","MI - East Lansing","MI - Farmington","MI - Grand Rapids","MI - Troy","MN - Blaine","MN - Eden Prairie","MN - Plymouth","MN - St. Paul","MO - Ballwin","MO - Kansas City","MO - Kirkwood","MO - Lee's Summit","MO - St. Peters","NC - Asheville","NC - Cary","NC - Chapel Hill","NC - Charlotte","NC - Cornelius","NC - Greensboro","NC - Holly Springs","NC - Raleigh","NC - Wake Forest","NC - Waxhaw","NC - Wilmington","NE - Omaha","NH - Nashua","NJ - Brick","NJ - Carlstadt","NJ - Chatham","NJ - Cherry Hill","NJ - Clark","NJ - Cresskill","NJ - Deptford","NJ - East Brunswick","NJ - Hoboken","NJ - Marlboro","NJ - Maywood","NJ - Montclair","NJ - Parsippany","NJ - Princeton","NJ - Randolph","NJ - Red Bank","NJ - Somerville","NJ - South Plainfield","NJ - Waldwick","NM - Albuquerque","NV - Green Valley","NV - Las Vegas West","NV - NW Las Vegas","NV - Reno","NY - Bay Ridge","NY - Beacon","NY - Bedford","NY - Briarcliff Manor","NY - Brooklyn","NY - Farmingdale","NY - Fayetteville NY","NY - Fleetwood","NY - Huntington","NY - Mamaroneck","NY - New York","NY - North Buffalo","NY - Port Jefferson","NY - Queens","NY - Riverhead","NY - Rochester NY","NY - Rockland","NY - Rockville Centre","NY - Roslyn","NY - Sayville","NY - Syosset/Oyster Bay","NY - White Plains","NY - Williamsburg","OH - Beavercreek","OH - Cincinnati","OH - Cleveland West","OH - Columbus","OH - Dublin","OH - Gahanna","OH - Highland Heights","OH - Mason","OH - Strongsville","OK - Edmond","OK - Jenks","OK - Oklahoma City","OK - Tulsa / Broken Arrow","OR - Bend","OR - Lake Oswego","OR - Portland","PA - Delco","PA - Downingtown","PA - Doylestown","PA - Easton","PA - Fort Washington","PA - Main Line","PA - Newtown","PA - Philadelphia","PA - Royersford","PA - South Hills","PA - Wexford","PA - York","SC - Fort Mill","SC - Greenville","SC - Mount Pleasant","TN - Franklin","TN - Germantown","TN - Hendersonville","TN - Knoxville","TN - Memphis","TN - Mt. Juliet","TN - Murfreesboro","TN - Nashville","TN - Wolfchase","TX - Arlington TX","TX - Austin","TX - Bryan/College Station","TX - Cedar Park","TX - Champion Forest","TX - Clear Lake","TX - Conroe","TX - Coppell","TX - Cypress","TX - Dallas","TX - Flower Mound","TX - Fort Worth","TX - Frisco","TX - Fulshear","TX - Katy","TX - Kingwood","TX - Kyle","TX - Lubbock","TX - McAllen","TX - McAllen South","TX - McKinney","TX - Memorial","TX - Midlothian TX","TX - Murphy","TX - New Braunfels","TX - North Dallas","TX - Pearland","TX - Plano","TX - Prosper","TX - Rockwall","TX - Round Rock","TX - Saginaw","TX - San Antonio","TX - Southlake/Keller","TX - Spring","TX - Sugar Land","TX - Summer Creek","TX - SW Austin","TX - The Colony","TX - The Heights","TX - The Woodlands","TX - West Houston","TX - West University Place","UT - Salt Lake City","UT - Sandy","UT - St. George","VA - Alexandria","VA - Arlington VA","VA - Ashburn","VA - Chantilly","VA - Chesapeake","VA - Fairfax VA","VA - Fredericksburg","VA - Haymarket","VA - Midlothian","VA - Short Pump","VA - Vienna","VA - Virginia Beach","VA - Woodbridge","WA - Bellevue","WA - Issaquah","WA - Kent","WA - Lynnwood","WA - Salmon Creek","WA - Seattle","WA - Seattle Downtown","WA - Spokane","WA - Vancouver WA","WA - West Seattle","WI - Brookfield","WI - Madison WI","WI - Shorewood"];
 
-      function renderLocations(filter) {
-        var dd = document.getElementById('location_dropdown');
-        dd.innerHTML = '';
+      var input = document.getElementById('location_search');
+      var dd = document.getElementById('location_dropdown');
+      var hidden = document.getElementById('location');
+      var isOpen = false;
+      var debounceTimer = null;
+
+      function showDropdown(filter) {
         var f = (filter || '').toLowerCase();
-        var matches = locations.filter(function(l) { return l.toLowerCase().indexOf(f) !== -1; });
-        matches.forEach(function(loc) {
-          var div = document.createElement('div');
-          div.textContent = loc;
-          div.style.cssText = 'padding:8px 10px; cursor:pointer; font-family:Oswald,Arial,sans-serif; font-size:13px;';
-          div.onmouseenter = function() { this.style.background = '#f5f5f5'; };
-          div.onmouseleave = function() { this.style.background = '#fff'; };
-          div.onclick = function() {
-            document.getElementById('location_search').value = loc;
-            document.getElementById('location').value = loc;
-            dd.style.display = 'none';
-          };
-          dd.appendChild(div);
-        });
-        if (matches.length === 0) {
-          var noResult = document.createElement('div');
-          noResult.textContent = 'No locations found';
-          noResult.style.cssText = 'padding:8px 10px; color:#999; font-family:Oswald,Arial,sans-serif; font-size:13px;';
-          dd.appendChild(noResult);
+        var matches;
+        if (!f) {
+          // No filter — show first 20 locations
+          matches = locations.slice(0, 20);
+        } else {
+          matches = locations.filter(function(l) { return l.toLowerCase().indexOf(f) !== -1; });
+          matches = matches.slice(0, 20);
         }
+
+        dd.innerHTML = '';
+        if (matches.length === 0) {
+          dd.innerHTML = '<div class="loc-empty">No locations found</div>';
+        } else {
+          matches.forEach(function(loc) {
+            var div = document.createElement('div');
+            div.className = 'loc-item';
+            div.textContent = loc;
+            div.addEventListener('mousedown', function(e) {
+              e.preventDefault(); // Prevent blur on input
+              input.value = loc;
+              hidden.value = loc;
+              dd.classList.remove('open');
+              isOpen = false;
+            });
+            dd.appendChild(div);
+          });
+        }
+        dd.classList.add('open');
+        isOpen = true;
       }
 
-      function filterLocations(val) {
-        var dd = document.getElementById('location_dropdown');
-        dd.style.display = 'block';
-        renderLocations(val);
-      }
+      input.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        var val = this.value;
+        debounceTimer = setTimeout(function() {
+          showDropdown(val);
+        }, 100);
+      });
 
-      renderLocations('');
+      input.addEventListener('focus', function() {
+        showDropdown(this.value);
+      });
 
       document.addEventListener('click', function(e) {
-        var dd = document.getElementById('location_dropdown');
-        var input = document.getElementById('location_search');
         if (!dd.contains(e.target) && e.target !== input) {
-          dd.style.display = 'none';
+          dd.classList.remove('open');
+          isOpen = false;
         }
       });
+    })();
     </script>
 
     <!-- Instrument -->
