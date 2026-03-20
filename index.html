@@ -229,54 +229,69 @@
         var parentRow = parentFields.length ? parentFields[0].closest('fieldset') : null;
         var studentRow = studentFields.length ? studentFields[0].closest('fieldset') : null;
 
-        // Create the toggle container
-        var toggleDiv = document.createElement('div');
-        toggleDiv.style.cssText = 'margin: 4px 0 8px; display: flex; gap: 16px; align-items: center;';
-        toggleDiv.innerHTML = '<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-family:Oswald,Arial,sans-serif;font-size:11px;font-weight:400;color:#555;text-transform:none;">' +
-          '<input type="checkbox" id="adult_toggle" style="accent-color:#c8102e;cursor:pointer;"> Adult Student, no age</label>' +
-          '<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-family:Oswald,Arial,sans-serif;font-size:11px;font-weight:400;color:#555;text-transform:none;">' +
-          '<input type="checkbox" id="note_toggle" style="accent-color:#c8102e;cursor:pointer;"> Add Note?</label>';
+        // Shared label style
+        var lblStyle = 'display:flex;align-items:center;gap:4px;cursor:pointer;font-family:Oswald,Arial,sans-serif;font-size:11px;font-weight:400;color:#555;text-transform:none;';
+        var chkStyle = 'accent-color:#c8102e;cursor:pointer;';
+
+        // ── Create "Adult Student, no age" toggle ──
+        var adultDiv = document.createElement('div');
+        adultDiv.style.cssText = 'margin: 4px 0 8px;';
+        adultDiv.innerHTML = '<label style="' + lblStyle + '">' +
+          '<input type="checkbox" id="adult_toggle" style="' + chkStyle + '"> Adult Student, no age</label>';
 
         // Insert after birthday field
         if (birthdayFieldset) {
-          birthdayFieldset.parentNode.insertBefore(toggleDiv, birthdayFieldset.nextSibling);
+          var bdayRow = birthdayFieldset.closest('fieldset');
+          if (bdayRow) {
+            bdayRow.parentNode.insertBefore(adultDiv, bdayRow.nextSibling);
+          } else {
+            birthdayFieldset.parentNode.insertBefore(adultDiv, birthdayFieldset.nextSibling);
+          }
         }
 
-        // Find notes field
+        // ── Find notes field and create "Add Note?" toggle above it ──
         var notesField = form.querySelector('[name="form_notes_and_availability"]');
         var notesFieldset = notesField ? notesField.closest('.hs-form-field') : null;
-        if (!notesFieldset && notesField) notesFieldset = notesField.closest('fieldset');
-        // Also check parent fieldset
         var notesRow = notesField ? notesField.closest('fieldset') : null;
 
-        // Hide notes by default
-        if (notesRow) notesRow.style.display = 'none';
-        if (notesFieldset && notesFieldset !== notesRow) notesFieldset.style.display = 'none';
+        var noteDiv = document.createElement('div');
+        noteDiv.style.cssText = 'margin: 4px 0 4px;';
+        noteDiv.innerHTML = '<label style="' + lblStyle + '">' +
+          '<input type="checkbox" id="note_toggle" style="' + chkStyle + '"> Add Note?</label>';
+
+        // Insert note toggle right before the notes fieldset
+        var notesTarget = notesRow || notesFieldset;
+        if (notesTarget) {
+          notesTarget.parentNode.insertBefore(noteDiv, notesTarget);
+          // Hide notes by default
+          notesTarget.style.display = 'none';
+        }
 
         // ── Adult Student toggle logic ──
         var adultToggle = document.getElementById('adult_toggle');
         adultToggle.addEventListener('change', function() {
           var hide = this.checked;
+          var show = hide ? 'none' : '';
 
-          // Hide/show birthday
+          // Hide/show birthday row
           if (birthdayFieldset) {
-            var bdayRow = birthdayFieldset.closest('fieldset');
-            if (bdayRow) bdayRow.style.display = hide ? 'none' : '';
+            var bRow = birthdayFieldset.closest('fieldset');
+            if (bRow) bRow.style.display = show;
           }
 
           // Hide/show student name row
-          if (studentRow) studentRow.style.display = hide ? 'none' : '';
+          if (studentRow) studentRow.style.display = show;
 
           // Hide/show parent name row
-          if (parentRow) parentRow.style.display = hide ? 'none' : '';
+          if (parentRow) parentRow.style.display = show;
         });
 
         // ── Add Note toggle logic ──
         var noteToggle = document.getElementById('note_toggle');
         noteToggle.addEventListener('change', function() {
-          var show = this.checked;
-          if (notesRow) notesRow.style.display = show ? '' : 'none';
-          if (notesFieldset && notesFieldset !== notesRow) notesFieldset.style.display = show ? '' : 'none';
+          if (notesTarget) {
+            notesTarget.style.display = this.checked ? '' : 'none';
+          }
         });
       }
     });
