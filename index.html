@@ -190,6 +190,71 @@
     font-size: 11px !important;
     color: #777 !important;
   }
+
+  /* ── Custom toggle styling ── */
+  .sor-toggle-row {
+    margin: 4px 0 8px;
+  }
+  .sor-toggle-row label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #555;
+    text-transform: none;
+  }
+  .sor-toggle-row input[type="checkbox"],
+  .sor-toggle-row input[type="radio"] {
+    accent-color: #c8102e;
+    cursor: pointer;
+  }
+
+  /* Section divider for multi-student */
+  .sor-student-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 12px 0 8px;
+  }
+  .sor-student-label {
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #c8102e;
+    margin-bottom: 4px;
+  }
+
+  /* Marketing source restricted dropdown styling */
+  .sor-restricted-select {
+    border: none !important;
+    border-bottom: 1.5px solid #1a1a1a !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding: 3px 0 5px !important;
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #1a1a1a !important;
+    outline: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M5 6L0 0h10z' fill='%231a1a1a'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 2px center !important;
+    background-size: 10px !important;
+    padding-right: 20px !important;
+    cursor: pointer !important;
+  }
+  .sor-restricted-select:focus {
+    border-bottom-color: #c8102e !important;
+  }
 </style>
 </head>
 <body>
@@ -197,8 +262,7 @@
 <div class="form-wrapper">
   <h1>Register a Lead</h1>
 
-  <!-- HubSpot Embedded Form — pulls all fields + options from the form definition -->
-  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+  <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
   <script>
     hbspt.forms.create({
       region: "na1",
@@ -206,93 +270,226 @@
       formId: "3016f15c-c3e1-433b-b7fc-bc713cd2d6a9",
       css: "",
       onFormReady: function(form) {
-        // ── Inject "Adult Student, no age" toggle ──
-        // Find the student birthday field and insert checkbox before it
-        var birthdayField = form.querySelector('[name="date_of_birth"]');
-        var studentFields = form.querySelectorAll('[name="student_first_name"], [name="student_last_name"]');
-        var parentFields = form.querySelectorAll('[name="firstname"], [name="lastname"]');
 
-        // Find the fieldsets containing these fields
-        var birthdayFieldset = birthdayField ? birthdayField.closest('.hs-form-field') : null;
-        var studentFieldsets = [];
-        studentFields.forEach(function(f) {
-          var fs = f.closest('.hs-form-field');
-          if (fs) studentFieldsets.push(fs);
-        });
-        var parentFieldsets = [];
-        parentFields.forEach(function(f) {
-          var fs = f.closest('.hs-form-field');
-          if (fs) parentFieldsets.push(fs);
-        });
-
-        // Also get the parent row (fieldset.form-columns-2) if they're side by side
-        var parentRow = parentFields.length ? parentFields[0].closest('fieldset') : null;
-        var studentRow = studentFields.length ? studentFields[0].closest('fieldset') : null;
-
-        // Shared label style
+        // ════════════════════════════════════════
+        // HELPERS
+        // ════════════════════════════════════════
         var lblStyle = 'display:flex;align-items:center;gap:4px;cursor:pointer;font-family:Oswald,Arial,sans-serif;font-size:11px;font-weight:400;color:#555;text-transform:none;';
         var chkStyle = 'accent-color:#c8102e;cursor:pointer;';
 
-        // ── Create "Adult Student, no age" toggle ──
+        function getField(name) { return form.querySelector('[name="' + name + '"]'); }
+        function getFieldset(name) {
+          var el = getField(name);
+          return el ? el.closest('.hs-form-field') : null;
+        }
+        function getRow(name) {
+          var el = getField(name);
+          return el ? el.closest('fieldset') : null;
+        }
+
+        // ════════════════════════════════════════
+        // 1. BIRTHDAY vs AGE TOGGLE
+        // ════════════════════════════════════════
+        var birthdayFieldset = getFieldset('date_of_birth');
+        var ageFieldset = getFieldset('student_age');
+        var birthdayAgeRow = birthdayFieldset ? birthdayFieldset.closest('fieldset') : null;
+
+        // By default, show birthday, hide age
+        if (ageFieldset) ageFieldset.style.display = 'none';
+
+        var ageToggleDiv = document.createElement('div');
+        ageToggleDiv.className = 'sor-toggle-row';
+        ageToggleDiv.innerHTML =
+          '<label style="' + lblStyle + '">' +
+            '<input type="radio" name="age_or_bday" value="birthday" checked style="' + chkStyle + '"> Birthday' +
+          '</label>' +
+          '<label style="' + lblStyle + 'margin-left:12px;display:inline-flex;">' +
+            '<input type="radio" name="age_or_bday" value="age" style="' + chkStyle + '"> Age' +
+          '</label>';
+
+        if (birthdayAgeRow) {
+          birthdayAgeRow.parentNode.insertBefore(ageToggleDiv, birthdayAgeRow);
+        }
+
+        var ageRadios = ageToggleDiv.querySelectorAll('input[name="age_or_bday"]');
+        ageRadios.forEach(function(r) {
+          r.addEventListener('change', function() {
+            if (this.value === 'birthday') {
+              if (birthdayFieldset) birthdayFieldset.style.display = '';
+              if (ageFieldset) ageFieldset.style.display = 'none';
+              // Clear the hidden one
+              var ageInput = getField('student_age');
+              if (ageInput) ageInput.value = '';
+            } else {
+              if (birthdayFieldset) birthdayFieldset.style.display = 'none';
+              if (ageFieldset) ageFieldset.style.display = '';
+              var bdayInput = getField('date_of_birth');
+              if (bdayInput) bdayInput.value = '';
+            }
+          });
+        });
+
+        // ════════════════════════════════════════
+        // 2. ADULT STUDENT TOGGLE
+        // ════════════════════════════════════════
+        var studentRow = getRow('student_first_name');
+        var parentRow = getRow('firstname');
+
         var adultDiv = document.createElement('div');
-        adultDiv.style.cssText = 'margin: 4px 0 8px;';
+        adultDiv.className = 'sor-toggle-row';
         adultDiv.innerHTML = '<label style="' + lblStyle + '">' +
-          '<input type="checkbox" id="adult_toggle" style="' + chkStyle + '"> Adult Student, no age</label>';
+          '<input type="checkbox" id="adult_toggle" style="' + chkStyle + '"> Adult Student (no student name/age needed)</label>';
 
-        // Insert after birthday field
-        if (birthdayFieldset) {
-          var bdayRow = birthdayFieldset.closest('fieldset');
-          if (bdayRow) {
-            bdayRow.parentNode.insertBefore(adultDiv, bdayRow.nextSibling);
-          } else {
-            birthdayFieldset.parentNode.insertBefore(adultDiv, birthdayFieldset.nextSibling);
-          }
+        // Insert after the birthday/age row
+        if (birthdayAgeRow) {
+          birthdayAgeRow.parentNode.insertBefore(adultDiv, birthdayAgeRow.nextSibling);
         }
 
-        // ── Find notes field and create "Add Note?" toggle above it ──
-        var notesField = form.querySelector('[name="form_notes_and_availability"]');
-        var notesFieldset = notesField ? notesField.closest('.hs-form-field') : null;
-        var notesRow = notesField ? notesField.closest('fieldset') : null;
-
-        var noteDiv = document.createElement('div');
-        noteDiv.style.cssText = 'margin: 4px 0 4px;';
-        noteDiv.innerHTML = '<label style="' + lblStyle + '">' +
-          '<input type="checkbox" id="note_toggle" style="' + chkStyle + '"> Add Note?</label>';
-
-        // Insert note toggle right before the notes fieldset
-        var notesTarget = notesRow || notesFieldset;
-        if (notesTarget) {
-          notesTarget.parentNode.insertBefore(noteDiv, notesTarget);
-          // Hide notes by default
-          notesTarget.style.display = 'none';
-        }
-
-        // ── Adult Student toggle logic ──
         var adultToggle = document.getElementById('adult_toggle');
         adultToggle.addEventListener('change', function() {
           var hide = this.checked;
-          var show = hide ? 'none' : '';
-
-          // Hide/show birthday row
-          if (birthdayFieldset) {
-            var bRow = birthdayFieldset.closest('fieldset');
-            if (bRow) bRow.style.display = show;
+          // Hide student name row, birthday/age row and toggle, parent row
+          if (studentRow) studentRow.style.display = hide ? 'none' : '';
+          if (birthdayAgeRow) birthdayAgeRow.style.display = hide ? 'none' : '';
+          if (ageToggleDiv) ageToggleDiv.style.display = hide ? 'none' : '';
+          // Hide parent name labels change
+          if (parentRow) {
+            var labels = parentRow.querySelectorAll('label');
+            labels.forEach(function(l) {
+              if (l.textContent.trim().indexOf('Parent') === 0) {
+                l.textContent = hide ? l.textContent.replace('Parent', 'Student') : l.textContent.replace('Student', 'Parent');
+              }
+            });
           }
-
-          // Hide/show student name row
-          if (studentRow) studentRow.style.display = show;
-
-          // Hide/show parent name row
-          if (parentRow) parentRow.style.display = show;
         });
 
-        // ── Add Note toggle logic ──
+        // ════════════════════════════════════════
+        // 3. MULTI-STUDENT (ADD ANOTHER)
+        // ════════════════════════════════════════
+        var numStudentsFieldset = getFieldset('number_of_students');
+        var numStudentsRow = getRow('number_of_students');
+
+        // Student 2/3/4 rows
+        var student2Row = getRow('student_first_name_2');
+        var instrument2Row = getRow('instrument_2');
+        var student3Row = getRow('student_first_name_3');
+        var instrument3Row = getRow('instrument_3');
+        var student4Row = getRow('student_first_name_4');
+        var instrument4Row = getRow('instrument_4');
+
+        // Hide all by default
+        var multiRows = [student2Row, instrument2Row, student3Row, instrument3Row, student4Row, instrument4Row];
+        multiRows.forEach(function(r) { if (r) r.style.display = 'none'; });
+
+        // Also hide the number_of_students dropdown — we use a simpler "Add Another" link
+        if (numStudentsRow) numStudentsRow.style.display = 'none';
+
+        // Track current student count
+        var studentCount = 1;
+        var maxStudents = 4;
+
+        // Create "Add Another Student" link
+        var addStudentDiv = document.createElement('div');
+        addStudentDiv.className = 'sor-toggle-row';
+        addStudentDiv.style.marginTop = '6px';
+        addStudentDiv.innerHTML = '<a href="#" id="add_student_link" style="font-family:Oswald,Arial,sans-serif;font-size:12px;font-weight:500;color:#c8102e;text-decoration:none;text-transform:uppercase;letter-spacing:0.5px;">+ Add Another Student</a>';
+
+        // Insert after student 1 instrument/area row
+        var instrument1Row = getRow('instrument');
+        if (instrument1Row) {
+          instrument1Row.parentNode.insertBefore(addStudentDiv, instrument1Row.nextSibling);
+        }
+
+        var addStudentLink = document.getElementById('add_student_link');
+
+        function showStudentGroup(n) {
+          // Insert a divider before the student group
+          var nameRow = getRow('student_first_name_' + n);
+          var instrRow = getRow('instrument_' + n);
+          if (nameRow) {
+            // Add divider if not already there
+            if (!nameRow.previousElementSibling || !nameRow.previousElementSibling.classList.contains('sor-student-divider')) {
+              var divider = document.createElement('hr');
+              divider.className = 'sor-student-divider';
+              nameRow.parentNode.insertBefore(divider, nameRow);
+              var lbl = document.createElement('div');
+              lbl.className = 'sor-student-label';
+              lbl.textContent = 'Student ' + n;
+              nameRow.parentNode.insertBefore(lbl, nameRow);
+            }
+            nameRow.style.display = '';
+          }
+          if (instrRow) instrRow.style.display = '';
+
+          // Update the hidden number_of_students field
+          var numField = getField('number_of_students');
+          if (numField) {
+            numField.value = n.toString();
+            numField.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+
+        addStudentLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (studentCount < maxStudents) {
+            studentCount++;
+            showStudentGroup(studentCount);
+            if (studentCount >= maxStudents) {
+              addStudentDiv.style.display = 'none';
+            }
+          }
+        });
+
+        // ════════════════════════════════════════
+        // 4. NOTES TOGGLE
+        // ════════════════════════════════════════
+        var notesFieldset = getFieldset('form_notes_and_availability');
+        var notesRow = getRow('form_notes_and_availability');
+        var notesTarget = notesRow || notesFieldset;
+
+        var noteDiv = document.createElement('div');
+        noteDiv.className = 'sor-toggle-row';
+        noteDiv.innerHTML = '<label style="' + lblStyle + '">' +
+          '<input type="checkbox" id="note_toggle" style="' + chkStyle + '"> Add Note?</label>';
+
+        if (notesTarget) {
+          notesTarget.parentNode.insertBefore(noteDiv, notesTarget);
+          notesTarget.style.display = 'none';
+        }
+
         var noteToggle = document.getElementById('note_toggle');
         noteToggle.addEventListener('change', function() {
           if (notesTarget) {
             notesTarget.style.display = this.checked ? '' : 'none';
           }
         });
+
+        // ════════════════════════════════════════
+        // 5. MARKETING SOURCE CATEGORY — RESTRICT OPTIONS
+        // Only show options relevant to LOCAL lead source.
+        // Current allowed: Local-Event, Referral, Other
+        // (Update this list once visual map doc is finalized)
+        // ════════════════════════════════════════
+        var LOCAL_ALLOWED_CATEGORIES = [
+          'Local-Event',
+          'Referral',
+          'Other'
+        ];
+
+        var mktSelect = getField('marketing_source_category');
+        if (mktSelect) {
+          var options = mktSelect.querySelectorAll('option');
+          options.forEach(function(opt) {
+            // Keep the blank/placeholder option
+            if (opt.value === '') return;
+            // Hide options not in the allowed list
+            if (LOCAL_ALLOWED_CATEGORIES.indexOf(opt.value) === -1) {
+              opt.style.display = 'none';
+              opt.disabled = true;
+            }
+          });
+        }
+
       }
     });
   </script>
