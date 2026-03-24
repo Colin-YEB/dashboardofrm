@@ -349,14 +349,20 @@
   <!-- Container for inline form rendering (no iframe) -->
   <div id="sor-form-container"></div>
 
-  <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
   <script>
-    hbspt.forms.create({
-      region: "na1",
-      portalId: "6841203",
-      formId: "a25f8d86-3e36-4f89-ab6c-55c2235ddd37",
-      target: "#sor-form-container",
-      onFormReady: function($form) {
+    // Load HubSpot forms script dynamically, then create form AFTER it's ready
+    (function() {
+      var script = document.createElement('script');
+      script.src = 'https://js.hsforms.net/forms/embed/v2.js';
+      script.charset = 'utf-8';
+      script.onload = function() {
+        hbspt.forms.create({
+          region: "na1",
+          portalId: "6841203",
+          formId: "a25f8d86-3e36-4f89-ab6c-55c2235ddd37",
+          target: "#sor-form-container",
+          css: "",
+          onFormReady: function($form) {
         try {
           // Normalize: HubSpot may pass jQuery or raw element
           var form = ($form && $form[0]) ? $form[0] : $form;
@@ -733,6 +739,10 @@
         }
       }
     });
+      };
+      script.onerror = function() { console.error('SOR: Failed to load HubSpot forms script'); };
+      document.head.appendChild(script);
+    })();
   </script>
 </div>
 
