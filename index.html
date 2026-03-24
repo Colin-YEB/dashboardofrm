@@ -61,7 +61,8 @@
 <div class="launcher">
   <h2>Register a Lead</h2>
   <p>Opens the lead registration form in a new window.</p>
-  <a href="https://colin-yeb.github.io/dashboardofrm/form.html" target="_blank" rel="noopener">Open Lead Form</a>
+  <!-- target="_top" breaks out of ALL iframes including HubSpot's sandbox -->
+  <a href="https://colin-yeb.github.io/dashboardofrm/form.html" target="_top">Open Lead Form</a>
 </div>
 </body>
 </html>
