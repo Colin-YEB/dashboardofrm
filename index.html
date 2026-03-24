@@ -346,12 +346,16 @@
 <div class="form-wrapper">
   <h1>Register a Lead</h1>
 
+  <!-- Container for inline form rendering (no iframe) -->
+  <div id="sor-form-container"></div>
+
   <script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
   <script>
     hbspt.forms.create({
       region: "na1",
       portalId: "6841203",
       formId: "a25f8d86-3e36-4f89-ab6c-55c2235ddd37",
+      target: "#sor-form-container",
       onFormReady: function($form) {
         try {
           // Normalize: HubSpot may pass jQuery or raw element
