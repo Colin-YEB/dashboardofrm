@@ -137,11 +137,12 @@
     resize: vertical !important;
   }
 
-  /* Submit button */
+  /* Submit button — override the generic input border-bottom rule */
   .hs-form .hs-submit {
     margin-top: 12px !important;
   }
 
+  .hs-form input[type="submit"],
   .hs-form .hs-button.primary {
     font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
     background-color: #c8102e !important;
@@ -151,6 +152,7 @@
     font-size: 14px !important;
     letter-spacing: 2px !important;
     border: none !important;
+    border-bottom: none !important;
     border-radius: 0 !important;
     padding: 12px 20px !important;
     width: 100% !important;
@@ -158,6 +160,7 @@
     transition: background-color 0.2s !important;
   }
 
+  .hs-form input[type="submit"]:hover,
   .hs-form .hs-button.primary:hover {
     background-color: #a00d24 !important;
   }
@@ -191,12 +194,46 @@
     color: #777 !important;
   }
 
-  /* ── Custom toggle styling ── */
+  /* ══════════════════════════════════════════════
+     CSS-FIRST HIDE: Hide student 2/3/4 fields,
+     number_of_students, student_age, and notes
+     BEFORE JS even runs. This prevents flash of
+     unwanted fields.
+     ══════════════════════════════════════════════ */
+  .hs_student_first_name_2,
+  .hs_student_last_name_2,
+  .hs_instrument_2,
+  .hs_student_first_name_3,
+  .hs_student_last_name_3,
+  .hs_instrument_3,
+  .hs_student_first_name_4,
+  .hs_student_last_name_4,
+  .hs_instrument_4,
+  .hs_number_of_students,
+  .hs_student_age,
+  .hs_form_notes_and_availability {
+    display: none !important;
+  }
+
+  /* When JS adds .sor-visible, override the hide */
+  .sor-visible {
+    display: block !important;
+  }
+
+  /* Also hide the fieldset parents of student 2/3/4 by default */
+  .sor-student-group {
+    display: none;
+  }
+  .sor-student-group.sor-visible {
+    display: block !important;
+  }
+
+  /* ── Custom injected element styling ── */
   .sor-toggle-row {
     margin: 4px 0 8px;
   }
-  .sor-toggle-row label {
-    display: flex;
+  .sor-toggle-label {
+    display: inline-flex;
     align-items: center;
     gap: 4px;
     cursor: pointer;
@@ -212,11 +249,16 @@
     cursor: pointer;
   }
 
-  /* Section divider for multi-student */
   .sor-student-divider {
     border: none;
     border-top: 1px solid #ddd;
-    margin: 12px 0 8px;
+    margin: 12px 0 4px;
+  }
+  .sor-student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
   }
   .sor-student-label {
     font-family: 'Oswald', Arial, sans-serif;
@@ -225,35 +267,91 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #c8102e;
-    margin-bottom: 4px;
+  }
+  .sor-remove-link {
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .sor-remove-link:hover {
+    color: #c8102e;
+  }
+  .sor-add-link {
+    display: inline-block;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #c8102e;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .sor-add-link:hover {
+    color: #a00d24;
   }
 
-  /* Marketing source restricted dropdown styling */
-  .sor-restricted-select {
+  /* Searchable location dropdown */
+  .sor-searchdrop {
+    position: relative;
+  }
+  .sor-searchdrop-input {
     border: none !important;
     border-bottom: 1.5px solid #1a1a1a !important;
     border-radius: 0 !important;
     background: transparent !important;
     padding: 3px 0 5px !important;
-    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif !important;
+    font-family: 'Oswald', Arial, sans-serif !important;
     font-size: 13px !important;
     font-weight: 400 !important;
     color: #1a1a1a !important;
     outline: none !important;
     box-shadow: none !important;
     width: 100% !important;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M5 6L0 0h10z' fill='%231a1a1a'/%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: right 2px center !important;
-    background-size: 10px !important;
-    padding-right: 20px !important;
-    cursor: pointer !important;
   }
-  .sor-restricted-select:focus {
+  .sor-searchdrop-input:focus {
     border-bottom-color: #c8102e !important;
+  }
+  .sor-searchdrop-input::placeholder {
+    color: #aaa !important;
+  }
+  .sor-searchdrop-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .sor-searchdrop-item {
+    padding: 6px 8px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    cursor: pointer;
+  }
+  .sor-searchdrop-item:hover {
+    background: #f5f5f5;
+    color: #c8102e;
+  }
+  .sor-searchdrop-empty {
+    padding: 8px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 11px;
+    color: #999;
+    text-align: center;
   }
 </style>
 </head>
@@ -266,230 +364,429 @@
   <script>
     hbspt.forms.create({
       region: "na1",
-      portalId: "50655039",
-      formId: "3016f15c-c3e1-433b-b7fc-bc713cd2d6a9",
+      portalId: "6841203",
+      formId: "a25f8d86-3e36-4f89-ab6c-55c2235ddd37",
       css: "",
-      onFormReady: function(form) {
+      onFormReady: function($form) {
+        // Normalize: HubSpot may pass jQuery or raw element
+        var form = ($form && $form[0]) ? $form[0] : $form;
+        if (!form) { console.error('SOR: form element not found'); return; }
+
+        console.log('SOR: onFormReady fired');
+        console.log('SOR: form HTML classes', form.className);
 
         // ════════════════════════════════════════
-        // HELPERS
+        // HELPERS — multiple strategies to find elements
         // ════════════════════════════════════════
-        var lblStyle = 'display:flex;align-items:center;gap:4px;cursor:pointer;font-family:Oswald,Arial,sans-serif;font-size:11px;font-weight:400;color:#555;text-transform:none;';
-        var chkStyle = 'accent-color:#c8102e;cursor:pointer;';
 
-        function getField(name) { return form.querySelector('[name="' + name + '"]'); }
-        function getFieldset(name) {
-          var el = getField(name);
-          return el ? el.closest('.hs-form-field') : null;
+        // Strategy 1: Find by HubSpot's .hs_fieldname wrapper class
+        function getHsWrapper(name) {
+          var el = form.querySelector('.hs_' + name);
+          if (!el) el = document.querySelector('.hs_' + name);
+          return el;
         }
-        function getRow(name) {
-          var el = getField(name);
-          return el ? el.closest('fieldset') : null;
+
+        // Strategy 2: Find input/select by name attribute
+        function getInput(name) {
+          var el = form.querySelector('[name="' + name + '"]');
+          if (!el) el = document.querySelector('[name="' + name + '"]');
+          return el;
         }
 
-        // ════════════════════════════════════════
-        // 1. BIRTHDAY vs AGE TOGGLE
-        // ════════════════════════════════════════
-        var birthdayFieldset = getFieldset('date_of_birth');
-        var ageFieldset = getFieldset('student_age');
-        var birthdayAgeRow = birthdayFieldset ? birthdayFieldset.closest('fieldset') : null;
+        // Get the fieldset (row) containing a field — walk up from the wrapper
+        function getFieldsetRow(name) {
+          var wrapper = getHsWrapper(name);
+          if (wrapper) {
+            var fs = wrapper.closest('fieldset');
+            if (fs) return fs;
+          }
+          // Fallback: try from input
+          var input = getInput(name);
+          if (input) {
+            var fs2 = input.closest('fieldset');
+            if (fs2) return fs2;
+          }
+          return null;
+        }
 
-        // By default, show birthday, hide age
-        if (ageFieldset) ageFieldset.style.display = 'none';
+        // Show/hide using both style AND our CSS class approach
+        function hideEl(el) {
+          if (!el) return;
+          el.style.display = 'none';
+          el.classList.remove('sor-visible');
+        }
+        function showEl(el) {
+          if (!el) return;
+          el.style.display = '';
+          el.classList.add('sor-visible');
+        }
 
+        // Debug: log what we find
+        function debugField(name) {
+          var w = getHsWrapper(name);
+          var i = getInput(name);
+          var r = getFieldsetRow(name);
+          console.log('SOR field [' + name + ']:', 'wrapper=' + !!w, 'input=' + !!i, 'row=' + !!r);
+        }
+
+        // Debug all key fields
+        ['student_first_name_2', 'instrument_2', 'student_first_name_3', 'instrument_3',
+         'student_first_name_4', 'instrument_4', 'number_of_students', 'student_age',
+         'date_of_birth', 'location', 'marketing_source_category', 'form_notes_and_availability'].forEach(debugField);
+
+        // ════════════════════════════════════════
+        // 1. HIDE STUDENT 2/3/4 rows via JS (backup to CSS)
+        // ════════════════════════════════════════
+        var studentGroups = {};
+        [2, 3, 4].forEach(function(n) {
+          var nameRow = getFieldsetRow('student_first_name_' + n);
+          var instrRow = getFieldsetRow('instrument_' + n);
+          // Also hide the individual wrappers in case fieldset approach fails
+          var nameW = getHsWrapper('student_first_name_' + n);
+          var lnameW = getHsWrapper('student_last_name_' + n);
+          var instrW = getHsWrapper('instrument_' + n);
+
+          studentGroups[n] = {
+            nameRow: nameRow, instrRow: instrRow,
+            nameW: nameW, lnameW: lnameW, instrW: instrW,
+            divider: null, header: null
+          };
+
+          hideEl(nameRow);
+          hideEl(instrRow);
+          hideEl(nameW);
+          hideEl(lnameW);
+          hideEl(instrW);
+        });
+
+        // Hide number_of_students
+        hideEl(getFieldsetRow('number_of_students'));
+        hideEl(getHsWrapper('number_of_students'));
+
+        // ════════════════════════════════════════
+        // 2. BIRTHDAY vs AGE TOGGLE
+        // ════════════════════════════════════════
+        var bdayWrapper = getHsWrapper('date_of_birth');
+        var ageWrapper = getHsWrapper('student_age');
+        var bdayRow = getFieldsetRow('date_of_birth');
+
+        // Age is hidden by CSS already, also hide via JS
+        hideEl(ageWrapper);
+
+        // Create toggle
         var ageToggleDiv = document.createElement('div');
         ageToggleDiv.className = 'sor-toggle-row';
+        ageToggleDiv.id = 'sor-age-toggle';
         ageToggleDiv.innerHTML =
-          '<label style="' + lblStyle + '">' +
-            '<input type="radio" name="age_or_bday" value="birthday" checked style="' + chkStyle + '"> Birthday' +
-          '</label>' +
-          '<label style="' + lblStyle + 'margin-left:12px;display:inline-flex;">' +
-            '<input type="radio" name="age_or_bday" value="age" style="' + chkStyle + '"> Age' +
+          '<label class="sor-toggle-label">' +
+            '<input type="radio" name="sor_age_or_bday" value="birthday" checked> Birthday' +
+          '</label> &nbsp; ' +
+          '<label class="sor-toggle-label">' +
+            '<input type="radio" name="sor_age_or_bday" value="age"> Age' +
           '</label>';
 
-        if (birthdayAgeRow) {
-          birthdayAgeRow.parentNode.insertBefore(ageToggleDiv, birthdayAgeRow);
+        // Insert before the birthday row
+        var ageInsertRef = bdayRow || bdayWrapper;
+        if (ageInsertRef && ageInsertRef.parentNode) {
+          ageInsertRef.parentNode.insertBefore(ageToggleDiv, ageInsertRef);
+          // Make sure birthday is visible
+          showEl(bdayWrapper);
         }
 
-        var ageRadios = ageToggleDiv.querySelectorAll('input[name="age_or_bday"]');
-        ageRadios.forEach(function(r) {
-          r.addEventListener('change', function() {
-            if (this.value === 'birthday') {
-              if (birthdayFieldset) birthdayFieldset.style.display = '';
-              if (ageFieldset) ageFieldset.style.display = 'none';
-              // Clear the hidden one
-              var ageInput = getField('student_age');
-              if (ageInput) ageInput.value = '';
-            } else {
-              if (birthdayFieldset) birthdayFieldset.style.display = 'none';
-              if (ageFieldset) ageFieldset.style.display = '';
-              var bdayInput = getField('date_of_birth');
-              if (bdayInput) bdayInput.value = '';
-            }
-          });
+        ageToggleDiv.addEventListener('change', function(e) {
+          if (e.target.value === 'birthday') {
+            showEl(bdayWrapper);
+            hideEl(ageWrapper);
+            var ai = getInput('student_age'); if (ai) ai.value = '';
+          } else if (e.target.value === 'age') {
+            hideEl(bdayWrapper);
+            showEl(ageWrapper);
+            var bi = getInput('date_of_birth'); if (bi) bi.value = '';
+          }
         });
 
         // ════════════════════════════════════════
-        // 2. ADULT STUDENT TOGGLE
+        // 3. ADULT STUDENT TOGGLE
         // ════════════════════════════════════════
-        var studentRow = getRow('student_first_name');
-        var parentRow = getRow('firstname');
+        var studentNameRow = getFieldsetRow('student_first_name');
+        var parentNameRow = getFieldsetRow('firstname');
 
         var adultDiv = document.createElement('div');
         adultDiv.className = 'sor-toggle-row';
-        adultDiv.innerHTML = '<label style="' + lblStyle + '">' +
-          '<input type="checkbox" id="adult_toggle" style="' + chkStyle + '"> Adult Student (no student name/age needed)</label>';
+        adultDiv.id = 'sor-adult-toggle';
+        adultDiv.innerHTML =
+          '<label class="sor-toggle-label">' +
+            '<input type="checkbox" id="sor_adult_chk"> Adult Student (skip student name/age)' +
+          '</label>';
 
-        // Insert after the birthday/age row
-        if (birthdayAgeRow) {
-          birthdayAgeRow.parentNode.insertBefore(adultDiv, birthdayAgeRow.nextSibling);
+        // Insert after the birthday/age section
+        var adultRef = bdayRow || ageInsertRef;
+        if (adultRef && adultRef.parentNode) {
+          // Insert after bdayRow
+          if (adultRef.nextSibling) {
+            adultRef.parentNode.insertBefore(adultDiv, adultRef.nextSibling);
+          } else {
+            adultRef.parentNode.appendChild(adultDiv);
+          }
         }
 
-        var adultToggle = document.getElementById('adult_toggle');
-        adultToggle.addEventListener('change', function() {
-          var hide = this.checked;
-          // Hide student name row, birthday/age row and toggle, parent row
-          if (studentRow) studentRow.style.display = hide ? 'none' : '';
-          if (birthdayAgeRow) birthdayAgeRow.style.display = hide ? 'none' : '';
-          if (ageToggleDiv) ageToggleDiv.style.display = hide ? 'none' : '';
-          // Hide parent name labels change
-          if (parentRow) {
-            var labels = parentRow.querySelectorAll('label');
-            labels.forEach(function(l) {
-              if (l.textContent.trim().indexOf('Parent') === 0) {
-                l.textContent = hide ? l.textContent.replace('Parent', 'Student') : l.textContent.replace('Student', 'Parent');
-              }
+        document.getElementById('sor_adult_chk').addEventListener('change', function() {
+          var isAdult = this.checked;
+          if (isAdult) {
+            hideEl(studentNameRow);
+            hideEl(getHsWrapper('student_first_name'));
+            hideEl(getHsWrapper('student_last_name'));
+            hideEl(bdayRow);
+            hideEl(bdayWrapper);
+            hideEl(ageWrapper);
+            hideEl(document.getElementById('sor-age-toggle'));
+          } else {
+            showEl(studentNameRow);
+            showEl(getHsWrapper('student_first_name'));
+            showEl(getHsWrapper('student_last_name'));
+            showEl(bdayRow);
+            // Restore whichever was selected
+            var sel = document.querySelector('input[name="sor_age_or_bday"]:checked');
+            if (sel && sel.value === 'age') { showEl(ageWrapper); hideEl(bdayWrapper); }
+            else { showEl(bdayWrapper); hideEl(ageWrapper); }
+            showEl(document.getElementById('sor-age-toggle'));
+          }
+          // Relabel parent → student
+          if (parentNameRow) {
+            parentNameRow.querySelectorAll('label').forEach(function(l) {
+              var t = l.textContent.trim();
+              if (isAdult && t.indexOf('Parent') >= 0) l.textContent = t.replace('Parent', 'Student');
+              else if (!isAdult && t.indexOf('Student') >= 0) l.textContent = t.replace('Student', 'Parent');
             });
           }
         });
 
         // ════════════════════════════════════════
-        // 3. MULTI-STUDENT (ADD ANOTHER)
+        // 4. MULTI-STUDENT: ADD / REMOVE
         // ════════════════════════════════════════
-        var numStudentsFieldset = getFieldset('number_of_students');
-        var numStudentsRow = getRow('number_of_students');
-
-        // Student 2/3/4 rows
-        var student2Row = getRow('student_first_name_2');
-        var instrument2Row = getRow('instrument_2');
-        var student3Row = getRow('student_first_name_3');
-        var instrument3Row = getRow('instrument_3');
-        var student4Row = getRow('student_first_name_4');
-        var instrument4Row = getRow('instrument_4');
-
-        // Hide all by default
-        var multiRows = [student2Row, instrument2Row, student3Row, instrument3Row, student4Row, instrument4Row];
-        multiRows.forEach(function(r) { if (r) r.style.display = 'none'; });
-
-        // Also hide the number_of_students dropdown — we use a simpler "Add Another" link
-        if (numStudentsRow) numStudentsRow.style.display = 'none';
-
-        // Track current student count
         var studentCount = 1;
-        var maxStudents = 4;
 
-        // Create "Add Another Student" link
-        var addStudentDiv = document.createElement('div');
-        addStudentDiv.className = 'sor-toggle-row';
-        addStudentDiv.style.marginTop = '6px';
-        addStudentDiv.innerHTML = '<a href="#" id="add_student_link" style="font-family:Oswald,Arial,sans-serif;font-size:12px;font-weight:500;color:#c8102e;text-decoration:none;text-transform:uppercase;letter-spacing:0.5px;">+ Add Another Student</a>';
+        // "Add Another Student" link
+        var addDiv = document.createElement('div');
+        addDiv.id = 'sor-add-student-div';
+        addDiv.innerHTML = '<a href="#" id="sor_add_student" class="sor-add-link">+ Add Another Student</a>';
 
         // Insert after student 1 instrument/area row
-        var instrument1Row = getRow('instrument');
-        if (instrument1Row) {
-          instrument1Row.parentNode.insertBefore(addStudentDiv, instrument1Row.nextSibling);
+        var instr1Row = getFieldsetRow('instrument');
+        if (instr1Row && instr1Row.parentNode) {
+          if (instr1Row.nextSibling) {
+            instr1Row.parentNode.insertBefore(addDiv, instr1Row.nextSibling);
+          } else {
+            instr1Row.parentNode.appendChild(addDiv);
+          }
         }
 
-        var addStudentLink = document.getElementById('add_student_link');
+        function updateNumField() {
+          var f = getInput('number_of_students');
+          if (f) {
+            f.value = studentCount.toString();
+            try { f.dispatchEvent(new Event('change', { bubbles: true })); } catch(e) {}
+          }
+        }
 
         function showStudentGroup(n) {
-          // Insert a divider before the student group
-          var nameRow = getRow('student_first_name_' + n);
-          var instrRow = getRow('instrument_' + n);
-          if (nameRow) {
-            // Add divider if not already there
-            if (!nameRow.previousElementSibling || !nameRow.previousElementSibling.classList.contains('sor-student-divider')) {
-              var divider = document.createElement('hr');
-              divider.className = 'sor-student-divider';
-              nameRow.parentNode.insertBefore(divider, nameRow);
-              var lbl = document.createElement('div');
-              lbl.className = 'sor-student-label';
-              lbl.textContent = 'Student ' + n;
-              nameRow.parentNode.insertBefore(lbl, nameRow);
-            }
-            nameRow.style.display = '';
-          }
-          if (instrRow) instrRow.style.display = '';
+          var g = studentGroups[n];
+          if (!g) return;
 
-          // Update the hidden number_of_students field
-          var numField = getField('number_of_students');
-          if (numField) {
-            numField.value = n.toString();
-            numField.dispatchEvent(new Event('change', { bubbles: true }));
+          // Create divider + header if not done yet
+          if (!g.divider && g.nameRow && g.nameRow.parentNode) {
+            g.divider = document.createElement('hr');
+            g.divider.className = 'sor-student-divider';
+
+            g.header = document.createElement('div');
+            g.header.className = 'sor-student-header';
+            g.header.innerHTML =
+              '<span class="sor-student-label">Student ' + n + '</span>' +
+              '<a href="#" class="sor-remove-link" data-n="' + n + '">Remove</a>';
+
+            g.nameRow.parentNode.insertBefore(g.divider, g.nameRow);
+            g.nameRow.parentNode.insertBefore(g.header, g.nameRow);
+
+            g.header.querySelector('.sor-remove-link').addEventListener('click', function(e) {
+              e.preventDefault();
+              removeStudentGroup(parseInt(this.getAttribute('data-n')));
+            });
           }
+
+          showEl(g.divider);
+          showEl(g.header);
+          showEl(g.nameRow);
+          showEl(g.instrRow);
+          showEl(g.nameW);
+          showEl(g.lnameW);
+          showEl(g.instrW);
         }
 
-        addStudentLink.addEventListener('click', function(e) {
+        function removeStudentGroup(n) {
+          var g = studentGroups[n];
+          if (!g) return;
+
+          // Clear fields
+          ['student_first_name_' + n, 'student_last_name_' + n, 'instrument_' + n].forEach(function(fname) {
+            var f = getInput(fname);
+            if (f) { f.value = ''; try { f.dispatchEvent(new Event('change', { bubbles: true })); } catch(e) {} }
+          });
+
+          hideEl(g.divider);
+          hideEl(g.header);
+          hideEl(g.nameRow);
+          hideEl(g.instrRow);
+          hideEl(g.nameW);
+          hideEl(g.lnameW);
+          hideEl(g.instrW);
+
+          // Recalculate count
+          studentCount = 1;
+          [2, 3, 4].forEach(function(i) {
+            var vis = studentGroups[i].nameRow && studentGroups[i].nameRow.style.display !== 'none';
+            var vis2 = studentGroups[i].nameW && studentGroups[i].nameW.classList.contains('sor-visible');
+            if (vis || vis2) studentCount = i;
+          });
+
+          updateNumField();
+          showEl(document.getElementById('sor-add-student-div'));
+        }
+
+        document.getElementById('sor_add_student').addEventListener('click', function(e) {
           e.preventDefault();
-          if (studentCount < maxStudents) {
-            studentCount++;
-            showStudentGroup(studentCount);
-            if (studentCount >= maxStudents) {
-              addStudentDiv.style.display = 'none';
+          for (var n = 2; n <= 4; n++) {
+            var g = studentGroups[n];
+            var isHidden = (!g.nameRow || g.nameRow.style.display === 'none') &&
+                           (!g.nameW || !g.nameW.classList.contains('sor-visible'));
+            if (isHidden) {
+              studentCount = n;
+              showStudentGroup(n);
+              updateNumField();
+              break;
             }
           }
+          // Check if all are visible
+          var allVis = [2, 3, 4].every(function(i) {
+            return studentGroups[i].nameW && studentGroups[i].nameW.classList.contains('sor-visible');
+          });
+          if (allVis) hideEl(document.getElementById('sor-add-student-div'));
         });
 
         // ════════════════════════════════════════
-        // 4. NOTES TOGGLE
+        // 5. NOTES TOGGLE
         // ════════════════════════════════════════
-        var notesFieldset = getFieldset('form_notes_and_availability');
-        var notesRow = getRow('form_notes_and_availability');
-        var notesTarget = notesRow || notesFieldset;
+        var notesWrapper = getHsWrapper('form_notes_and_availability');
+        var notesRow = getFieldsetRow('form_notes_and_availability');
+        var notesTarget = notesRow || notesWrapper;
+
+        // Already hidden by CSS, also hide via JS
+        hideEl(notesTarget);
+        hideEl(notesWrapper);
 
         var noteDiv = document.createElement('div');
         noteDiv.className = 'sor-toggle-row';
-        noteDiv.innerHTML = '<label style="' + lblStyle + '">' +
-          '<input type="checkbox" id="note_toggle" style="' + chkStyle + '"> Add Note?</label>';
+        noteDiv.innerHTML =
+          '<label class="sor-toggle-label">' +
+            '<input type="checkbox" id="sor_note_chk"> Add Note?' +
+          '</label>';
 
-        if (notesTarget) {
+        if (notesTarget && notesTarget.parentNode) {
           notesTarget.parentNode.insertBefore(noteDiv, notesTarget);
-          notesTarget.style.display = 'none';
         }
 
-        var noteToggle = document.getElementById('note_toggle');
-        noteToggle.addEventListener('change', function() {
-          if (notesTarget) {
-            notesTarget.style.display = this.checked ? '' : 'none';
+        document.getElementById('sor_note_chk').addEventListener('change', function() {
+          if (this.checked) {
+            showEl(notesTarget);
+            showEl(notesWrapper);
+          } else {
+            hideEl(notesTarget);
+            hideEl(notesWrapper);
           }
         });
 
         // ════════════════════════════════════════
-        // 5. MARKETING SOURCE CATEGORY — RESTRICT OPTIONS
-        // Only show options relevant to LOCAL lead source.
-        // Current allowed: Local-Event, Referral, Other
-        // (Update this list once visual map doc is finalized)
+        // 6. SEARCHABLE LOCATION DROPDOWN
+        //    Replaces the native <select> with a
+        //    custom type-ahead dropdown widget.
         // ════════════════════════════════════════
-        var LOCAL_ALLOWED_CATEGORIES = [
-          'Local-Event',
-          'Referral',
-          'Other'
-        ];
+        var locSelect = getInput('location');
+        var locWrapper = getHsWrapper('location');
 
-        var mktSelect = getField('marketing_source_category');
-        if (mktSelect) {
-          var options = mktSelect.querySelectorAll('option');
-          options.forEach(function(opt) {
-            // Keep the blank/placeholder option
-            if (opt.value === '') return;
-            // Hide options not in the allowed list
-            if (LOCAL_ALLOWED_CATEGORIES.indexOf(opt.value) === -1) {
-              opt.style.display = 'none';
-              opt.disabled = true;
+        if (locSelect && locSelect.tagName === 'SELECT') {
+          // Gather all options
+          var allLocOptions = [];
+          Array.prototype.forEach.call(locSelect.options, function(opt) {
+            if (opt.value) allLocOptions.push({ value: opt.value, label: opt.textContent });
+          });
+
+          // Hide the native select
+          locSelect.style.display = 'none';
+
+          // Build custom widget
+          var sdBox = document.createElement('div');
+          sdBox.className = 'sor-searchdrop';
+          sdBox.innerHTML =
+            '<input type="text" class="sor-searchdrop-input" id="sor_loc_input" placeholder="Search locations..." autocomplete="off" />' +
+            '<div class="sor-searchdrop-list" id="sor_loc_list"></div>';
+
+          locSelect.parentNode.insertBefore(sdBox, locSelect);
+
+          var sdInput = document.getElementById('sor_loc_input');
+          var sdList = document.getElementById('sor_loc_list');
+
+          function renderLocList(query) {
+            sdList.innerHTML = '';
+            var q = (query || '').toLowerCase().trim();
+            var matches = allLocOptions.filter(function(o) {
+              return !q || o.label.toLowerCase().indexOf(q) >= 0;
+            });
+            if (matches.length === 0) {
+              sdList.innerHTML = '<div class="sor-searchdrop-empty">No locations found</div>';
+            }
+            matches.forEach(function(o) {
+              var item = document.createElement('div');
+              item.className = 'sor-searchdrop-item';
+              item.textContent = o.label;
+              item.setAttribute('data-value', o.value);
+              item.addEventListener('mousedown', function(e) {
+                e.preventDefault(); // prevent blur before click registers
+                sdInput.value = o.label;
+                locSelect.value = o.value;
+                try { locSelect.dispatchEvent(new Event('change', { bubbles: true })); } catch(ex) {}
+                sdList.style.display = 'none';
+                sdInput.setAttribute('data-selected', o.value);
+              });
+              sdList.appendChild(item);
+            });
+          }
+
+          sdInput.addEventListener('focus', function() {
+            renderLocList(this.value);
+            sdList.style.display = 'block';
+          });
+
+          sdInput.addEventListener('input', function() {
+            this.removeAttribute('data-selected');
+            locSelect.value = '';
+            renderLocList(this.value);
+            sdList.style.display = 'block';
+          });
+
+          sdInput.addEventListener('blur', function() {
+            // Small delay to allow click on list item
+            setTimeout(function() { sdList.style.display = 'none'; }, 150);
+          });
+
+          // If user clears the input, clear the select
+          sdInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              sdList.style.display = 'none';
+              sdInput.blur();
             }
           });
         }
 
+        console.log('SOR: all JS hooks attached');
       }
     });
   </script>
