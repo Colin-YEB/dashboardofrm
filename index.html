@@ -813,42 +813,47 @@
     btn.textContent = 'Submitting...';
     statusDiv.innerHTML = '';
 
+    console.log('SOR: submitting payload', JSON.stringify(payload));
+
     fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
     .then(function(resp) {
-      if (resp.ok || resp.status === 200) {
-        return resp.json().then(function() {
-          statusDiv.innerHTML = '<div class="status-msg status-success">Lead submitted successfully!</div>';
-          // Reset form after short delay
-          setTimeout(function() {
-            document.getElementById('leadForm').reset();
-            locInput.value = '';
-            locHidden.value = '';
-            // Re-hide student groups and notes
-            [2, 3, 4].forEach(function(n) {
-              document.getElementById('student' + n + '_group').classList.add('sor-hidden');
-            });
-            document.getElementById('notes_row').classList.add('sor-hidden');
-            document.getElementById('add_student_div').classList.remove('sor-hidden');
-            document.getElementById('bday_row').classList.remove('sor-hidden');
-            document.getElementById('age_row').classList.add('sor-hidden');
-            document.getElementById('age_toggle_row').classList.remove('sor-hidden');
-            document.getElementById('student1_name_row').classList.remove('sor-hidden');
-            document.getElementById('lbl_firstname').textContent = 'Parent First Name';
-            document.getElementById('lbl_lastname').textContent = 'Parent Last Name';
-            document.getElementById('number_of_students').value = '1';
-            studentCount = 1;
-            statusDiv.innerHTML = '';
-          }, 2000);
-        });
+      console.log('SOR: response status', resp.status);
+      // Read body as text first (safe — never crashes)
+      return resp.text().then(function(body) {
+        console.log('SOR: response body', body);
+        return { status: resp.status, ok: resp.ok, body: body };
+      });
+    })
+    .then(function(result) {
+      if (result.ok || result.status === 200 || result.status === 204 || result.status === 302) {
+        statusDiv.innerHTML = '<div class="status-msg status-success">Lead submitted successfully!</div>';
+        // Reset form after short delay
+        setTimeout(function() {
+          document.getElementById('leadForm').reset();
+          locInput.value = '';
+          locHidden.value = '';
+          [2, 3, 4].forEach(function(n) {
+            document.getElementById('student' + n + '_group').classList.add('sor-hidden');
+          });
+          document.getElementById('notes_row').classList.add('sor-hidden');
+          document.getElementById('add_student_div').classList.remove('sor-hidden');
+          document.getElementById('bday_row').classList.remove('sor-hidden');
+          document.getElementById('age_row').classList.add('sor-hidden');
+          document.getElementById('age_toggle_row').classList.remove('sor-hidden');
+          document.getElementById('student1_name_row').classList.remove('sor-hidden');
+          document.getElementById('lbl_firstname').textContent = 'Parent First Name';
+          document.getElementById('lbl_lastname').textContent = 'Parent Last Name';
+          document.getElementById('number_of_students').value = '1';
+          studentCount = 1;
+          statusDiv.innerHTML = '';
+        }, 2000);
       } else {
-        return resp.text().then(function(body) {
-          console.error('SOR submit error:', resp.status, body);
-          statusDiv.innerHTML = '<div class="status-msg status-error">Error submitting lead. Please try again.</div>';
-        });
+        console.error('SOR submit error:', result.status, result.body);
+        statusDiv.innerHTML = '<div class="status-msg status-error">Error (' + result.status + '). Please try again.</div>';
       }
     })
     .catch(function(err) {
