@@ -203,12 +203,15 @@
   .hs_student_first_name_2,
   .hs_student_last_name_2,
   .hs_instrument_2,
+  .hs_area_of_interest_2,
   .hs_student_first_name_3,
   .hs_student_last_name_3,
   .hs_instrument_3,
+  .hs_area_of_interest_3,
   .hs_student_first_name_4,
   .hs_student_last_name_4,
   .hs_instrument_4,
+  .hs_area_of_interest_4,
   .hs_number_of_students,
   .hs_student_age,
   .hs_form_notes_and_availability {
@@ -445,10 +448,11 @@
           var nameW = getHsWrapper('student_first_name_' + n);
           var lnameW = getHsWrapper('student_last_name_' + n);
           var instrW = getHsWrapper('instrument_' + n);
+          var aoiW = getHsWrapper('area_of_interest_' + n);
 
           studentGroups[n] = {
             nameRow: nameRow, instrRow: instrRow,
-            nameW: nameW, lnameW: lnameW, instrW: instrW,
+            nameW: nameW, lnameW: lnameW, instrW: instrW, aoiW: aoiW,
             divider: null, header: null
           };
 
@@ -457,6 +461,7 @@
           hideEl(nameW);
           hideEl(lnameW);
           hideEl(instrW);
+          hideEl(aoiW);
         });
 
         // Hide number_of_students
@@ -620,6 +625,7 @@
           showEl(g.nameW);
           showEl(g.lnameW);
           showEl(g.instrW);
+          showEl(g.aoiW);
         }
 
         function removeStudentGroup(n) {
@@ -627,7 +633,7 @@
           if (!g) return;
 
           // Clear fields
-          ['student_first_name_' + n, 'student_last_name_' + n, 'instrument_' + n].forEach(function(fname) {
+          ['student_first_name_' + n, 'student_last_name_' + n, 'instrument_' + n, 'area_of_interest_' + n].forEach(function(fname) {
             var f = getInput(fname);
             if (f) { f.value = ''; try { f.dispatchEvent(new Event('change', { bubbles: true })); } catch(e) {} }
           });
@@ -639,6 +645,7 @@
           hideEl(g.nameW);
           hideEl(g.lnameW);
           hideEl(g.instrW);
+          hideEl(g.aoiW);
 
           // Recalculate count
           studentCount = 1;
