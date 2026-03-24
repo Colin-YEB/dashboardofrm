@@ -369,7 +369,6 @@
       region: "na1",
       portalId: "6841203",
       formId: "a25f8d86-3e36-4f89-ab6c-55c2235ddd37",
-      css: "",
       onFormReady: function($form) {
         // Normalize: HubSpot may pass jQuery or raw element
         var form = ($form && $form[0]) ? $form[0] : $form;
@@ -741,30 +740,44 @@
           var sdInput = document.getElementById('sor_loc_input');
           var sdList = document.getElementById('sor_loc_list');
 
+          var MAX_SHOWN = 20; // Cap results to prevent page crash
+
           function renderLocList(query) {
             sdList.innerHTML = '';
             var q = (query || '').toLowerCase().trim();
-            var matches = allLocOptions.filter(function(o) {
-              return !q || o.label.toLowerCase().indexOf(q) >= 0;
-            });
-            if (matches.length === 0) {
+
+            // Don't show anything until user types at least 1 char
+            if (!q) {
+              sdList.innerHTML = '<div class="sor-searchdrop-empty">Start typing to search...</div>';
+              return;
+            }
+
+            var count = 0;
+            for (var i = 0; i < allLocOptions.length && count < MAX_SHOWN; i++) {
+              var o = allLocOptions[i];
+              if (o.label.toLowerCase().indexOf(q) >= 0) {
+                count++;
+                var item = document.createElement('div');
+                item.className = 'sor-searchdrop-item';
+                item.textContent = o.label;
+                item.setAttribute('data-value', o.value);
+                item.addEventListener('mousedown', function(opt) {
+                  return function(e) {
+                    e.preventDefault();
+                    sdInput.value = opt.label;
+                    locSelect.value = opt.value;
+                    try { locSelect.dispatchEvent(new Event('change', { bubbles: true })); } catch(ex) {}
+                    sdList.style.display = 'none';
+                    sdInput.setAttribute('data-selected', opt.value);
+                  };
+                }(o));
+                sdList.appendChild(item);
+              }
+            }
+
+            if (count === 0) {
               sdList.innerHTML = '<div class="sor-searchdrop-empty">No locations found</div>';
             }
-            matches.forEach(function(o) {
-              var item = document.createElement('div');
-              item.className = 'sor-searchdrop-item';
-              item.textContent = o.label;
-              item.setAttribute('data-value', o.value);
-              item.addEventListener('mousedown', function(e) {
-                e.preventDefault(); // prevent blur before click registers
-                sdInput.value = o.label;
-                locSelect.value = o.value;
-                try { locSelect.dispatchEvent(new Event('change', { bubbles: true })); } catch(ex) {}
-                sdList.style.display = 'none';
-                sdInput.setAttribute('data-selected', o.value);
-              });
-              sdList.appendChild(item);
-            });
           }
 
           sdInput.addEventListener('focus', function() {
