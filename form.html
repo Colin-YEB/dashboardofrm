@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register a Lead - School of Rock</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+  }
+  .form-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px 15px;
+  }
+  h1 {
+    color: #c8102e;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  /* ── Form styling ── */
+  label {
+    font-family: 'Oswald', Arial, sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;
+    display: block;
+    margin-bottom: 0;
+    line-height: 1.2;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    border: none;
+    border-bottom: 1.5px solid #1a1a1a;
+    border-radius: 0;
+    background: transparent;
+    padding: 3px 0 5px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #1a1a1a;
+    outline: none;
+    box-shadow: none;
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-bottom-color: #c8102e;
+  }
+  input::placeholder, textarea::placeholder {
+    color: #aaa;
+    font-weight: 400;
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M5 6L0 0h10z' fill='%231a1a1a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    background-size: 10px;
+    padding-right: 20px;
+    cursor: pointer;
+  }
+  textarea {
+    min-height: 36px;
+    resize: vertical;
+  }
+
+  .field-group {
+    margin-bottom: 8px;
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+  }
+  .row > .field-group {
+    flex: 1;
+  }
+
+  /* Toggles */
+  .toggle-row {
+    margin: 4px 0 8px;
+  }
+  .toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #555;
+    text-transform: none;
+  }
+  .toggle-row input[type="checkbox"],
+  .toggle-row input[type="radio"] {
+    accent-color: #c8102e;
+    cursor: pointer;
+  }
+
+  /* Student groups */
+  .student-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 12px 0 4px;
+  }
+  .student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .student-label {
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #c8102e;
+  }
+  .remove-link {
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .remove-link:hover { color: #c8102e; }
+  .add-link {
+    display: inline-block;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #c8102e;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .add-link:hover { color: #a00d24; }
+
+  /* Searchable dropdown */
+  .searchdrop {
+    position: relative;
+  }
+  .searchdrop-input {
+    border: none;
+    border-bottom: 1.5px solid #1a1a1a;
+    border-radius: 0;
+    background: transparent;
+    padding: 3px 0 5px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #1a1a1a;
+    outline: none;
+    width: 100%;
+  }
+  .searchdrop-input:focus { border-bottom-color: #c8102e; }
+  .searchdrop-input::placeholder { color: #aaa; }
+  .searchdrop-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .searchdrop-item {
+    padding: 6px 8px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    cursor: pointer;
+  }
+  .searchdrop-item:hover {
+    background: #f5f5f5;
+    color: #c8102e;
+  }
+  .searchdrop-empty {
+    padding: 8px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+  }
+
+  /* Checkbox label */
+  .chk-label {
+    font-weight: 400;
+    text-transform: none;
+    font-size: 11px;
+    color: #555;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .chk-label input[type="checkbox"] {
+    accent-color: #c8102e;
+    width: auto;
+  }
+
+  /* Submit */
+  .submit-btn {
+    font-family: 'Oswald', Arial, sans-serif;
+    background-color: #c8102e;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 0;
+    padding: 12px 20px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 12px;
+  }
+  .submit-btn:hover { background-color: #a00d24; }
+  .submit-btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+
+  /* Hidden */
+  .sor-hidden {
+    display: none;
+  }
+
+  /* Status messages */
+  .status-msg {
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    font-family: 'Oswald', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .status-success { color: #28a745; }
+  .status-error { color: #c8102e; }
+
+  /* Error on fields */
+  .field-error input,
+  .field-error select,
+  .field-error textarea {
+    border-bottom-color: #c8102e !important;
+  }
+  .error-msg {
+    color: #c8102e;
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: none;
+    margin-top: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="form-wrapper">
+  <h1>Register a Lead</h1>
+
+  <form id="leadForm" novalidate>
+
+    <!-- Email (required) -->
+    <div class="field-group">
+      <label for="email">Email <span style="color:#c8102e">*</span></label>
+      <input type="email" id="email" name="email" placeholder="Email Address" required>
+    </div>
+
+    <!-- Parent/Registrant Name -->
+    <div class="row">
+      <div class="field-group">
+        <label for="firstname" id="lbl_firstname">Parent First Name</label>
+        <input type="text" id="firstname" name="firstname" placeholder="Parent/Registrant First Name">
+      </div>
+      <div class="field-group">
+        <label for="lastname" id="lbl_lastname">Parent Last Name</label>
+        <input type="text" id="lastname" name="lastname" placeholder="Parent/Registrant Last Name">
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="field-group">
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" placeholder="Phone Number">
+    </div>
+
+    <!-- Student 1 Name -->
+    <div id="student1_name_row" class="row">
+      <div class="field-group">
+        <label for="student_first_name">Student First Name</label>
+        <input type="text" id="student_first_name" name="student_first_name" placeholder="Student First Name">
+      </div>
+      <div class="field-group">
+        <label for="student_last_name">Student Last Name</label>
+        <input type="text" id="student_last_name" name="student_last_name" placeholder="Student Last Name">
+      </div>
+    </div>
+
+    <!-- Birthday vs Age toggle -->
+    <div class="toggle-row" id="age_toggle_row">
+      <label class="toggle-label"><input type="radio" name="age_or_bday" value="birthday" checked> Birthday</label> &nbsp;
+      <label class="toggle-label"><input type="radio" name="age_or_bday" value="age"> Age</label>
+    </div>
+
+    <!-- Birthday -->
+    <div class="row" id="bday_row">
+      <div class="field-group">
+        <label for="date_of_birth">Student Birthday</label>
+        <input type="date" id="date_of_birth" name="date_of_birth">
+      </div>
+    </div>
+
+    <!-- Age (hidden by default) -->
+    <div class="row sor-hidden" id="age_row">
+      <div class="field-group">
+        <label for="student_age">Student Age</label>
+        <input type="number" id="student_age" name="student_age" placeholder="Age" min="1" max="99">
+      </div>
+    </div>
+
+    <!-- Adult Student toggle -->
+    <div class="toggle-row">
+      <label class="toggle-label"><input type="checkbox" id="adult_chk"> Adult Student (skip student name/age)</label>
+    </div>
+
+    <!-- Student 1 Instrument + Area -->
+    <div class="row" id="student1_instr_row">
+      <div class="field-group">
+        <label for="instrument">Instrument</label>
+        <select id="instrument" name="instrument">
+          <option value="">Select...</option>
+          <option value="Guitar">Guitar</option>
+          <option value="Drums">Drums</option>
+          <option value="Vocals">Vocals</option>
+          <option value="Bass Guitar">Bass Guitar</option>
+          <option value="Keyboard">Keyboard</option>
+          <option value="Other/Undecided">Other/Undecided</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="area_of_interest">Area of Interest</label>
+        <select id="area_of_interest" name="area_of_interest">
+          <option value="">Select...</option>
+          <option value="Adult Program">Adult Program</option>
+          <option value="Back to School">Back to School</option>
+          <option value="Camps/Workshops">Camps/Workshops</option>
+          <option value="Lessons">Lessons</option>
+          <option value="Little Wing">Little Wing</option>
+          <option value="Online">Online</option>
+          <option value="Other">Other</option>
+          <option value="Performance Program">Performance Program</option>
+          <option value="Rock 101">Rock 101</option>
+          <option value="Rookies">Rookies</option>
+          <option value="Songwriting">Songwriting</option>
+          <option value="Unknown">Unknown</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Add Another Student link -->
+    <div id="add_student_div">
+      <a href="javascript:void(0)" id="add_student_link" class="add-link">+ Add Another Student</a>
+    </div>
+
+    <!-- Student 2 -->
+    <div id="student2_group" class="sor-hidden">
+      <hr class="student-divider">
+      <div class="student-header">
+        <span class="student-label">Student 2</span>
+        <a href="javascript:void(0)" class="remove-link" onclick="removeStudent(2)">Remove</a>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label for="student_first_name_2">Student 2 First Name</label>
+          <input type="text" id="student_first_name_2" name="student_first_name_2">
+        </div>
+        <div class="field-group">
+          <label for="student_last_name_2">Student 2 Last Name</label>
+          <input type="text" id="student_last_name_2" name="student_last_name_2">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label for="instrument_2">Instrument</label>
+          <select id="instrument_2" name="instrument_2">
+            <option value="">Select...</option>
+            <option value="Guitar">Guitar</option>
+            <option value="Drums">Drums</option>
+            <option value="Vocals">Vocals</option>
+            <option value="Bass Guitar">Bass Guitar</option>
+            <option value="Keyboard">Keyboard</option>
+            <option value="Other/Undecided">Other/Undecided</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="area_of_interest_2">Area of Interest</label>
+          <select id="area_of_interest_2" name="area_of_interest_2">
+            <option value="">Select...</option>
+            <option value="Adult Program">Adult Program</option>
+            <option value="Back to School">Back to School</option>
+            <option value="Camps/Workshops">Camps/Workshops</option>
+            <option value="Lessons">Lessons</option>
+            <option value="Little Wing">Little Wing</option>
+            <option value="Online">Online</option>
+            <option value="Other">Other</option>
+            <option value="Performance Program">Performance Program</option>
+            <option value="Rock 101">Rock 101</option>
+            <option value="Rookies">Rookies</option>
+            <option value="Songwriting">Songwriting</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student 3 -->
+    <div id="student3_group" class="sor-hidden">
+      <hr class="student-divider">
+      <div class="student-header">
+        <span class="student-label">Student 3</span>
+        <a href="javascript:void(0)" class="remove-link" onclick="removeStudent(3)">Remove</a>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label for="student_first_name_3">Student 3 First Name</label>
+          <input type="text" id="student_first_name_3" name="student_first_name_3">
+        </div>
+        <div class="field-group">
+          <label for="student_last_name_3">Student 3 Last Name</label>
+          <input type="text" id="student_last_name_3" name="student_last_name_3">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label for="instrument_3">Instrument</label>
+          <select id="instrument_3" name="instrument_3">
+            <option value="">Select...</option>
+            <option value="Guitar">Guitar</option>
+            <option value="Drums">Drums</option>
+            <option value="Vocals">Vocals</option>
+            <option value="Bass Guitar">Bass Guitar</option>
+            <option value="Keyboard">Keyboard</option>
+            <option value="Other/Undecided">Other/Undecided</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="area_of_interest_3">Area of Interest</label>
+          <select id="area_of_interest_3" name="area_of_interest_3">
+            <option value="">Select...</option>
+            <option value="Adult Program">Adult Program</option>
+            <option value="Back to School">Back to School</option>
+            <option value="Camps/Workshops">Camps/Workshops</option>
+            <option value="Lessons">Lessons</option>
+            <option value="Little Wing">Little Wing</option>
+            <option value="Online">Online</option>
+            <option value="Other">Other</option>
+            <option value="Performance Program">Performance Program</option>
+            <option value="Rock 101">Rock 101</option>
+            <option value="Rookies">Rookies</option>
+            <option value="Songwriting">Songwriting</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student 4 -->
+    <div id="student4_group" class="sor-hidden">
+      <hr class="student-divider">
+      <div class="student-header">
+        <span class="student-label">Student 4</span>
+        <a href="javascript:void(0)" class="remove-link" onclick="removeStudent(4)">Remove</a>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label for="student_first_name_4">Student 4 First Name</label>
+          <input type="text" id="student_first_name_4" name="student_first_name_4">
+        </div>
+        <div class="field-group">
+          <label for="student_last_name_4">Student 4 Last Name</label>
+          <input type="text" id="student_last_name_4" name="student_last_name_4">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label for="instrument_4">Instrument</label>
+          <select id="instrument_4" name="instrument_4">
+            <option value="">Select...</option>
+            <option value="Guitar">Guitar</option>
+            <option value="Drums">Drums</option>
+            <option value="Vocals">Vocals</option>
+            <option value="Bass Guitar">Bass Guitar</option>
+            <option value="Keyboard">Keyboard</option>
+            <option value="Other/Undecided">Other/Undecided</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="area_of_interest_4">Area of Interest</label>
+          <select id="area_of_interest_4" name="area_of_interest_4">
+            <option value="">Select...</option>
+            <option value="Adult Program">Adult Program</option>
+            <option value="Back to School">Back to School</option>
+            <option value="Camps/Workshops">Camps/Workshops</option>
+            <option value="Lessons">Lessons</option>
+            <option value="Little Wing">Little Wing</option>
+            <option value="Online">Online</option>
+            <option value="Other">Other</option>
+            <option value="Performance Program">Performance Program</option>
+            <option value="Rock 101">Rock 101</option>
+            <option value="Rookies">Rookies</option>
+            <option value="Songwriting">Songwriting</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location (searchable) -->
+    <div class="field-group">
+      <label>Location</label>
+      <div class="searchdrop" id="loc_searchdrop">
+        <input type="text" class="searchdrop-input" id="loc_input" placeholder="Search locations..." autocomplete="off">
+        <div class="searchdrop-list" id="loc_list"></div>
+      </div>
+      <input type="hidden" id="location" name="location">
+    </div>
+
+    <!-- Marketing Source Category -->
+    <div class="field-group">
+      <label for="marketing_source_category">Marketing Source</label>
+      <select id="marketing_source_category" name="marketing_source_category">
+        <option value="">Select...</option>
+        <option value="Local-Event">Local-Event</option>
+        <option value="Referral">Referral</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <!-- SMS Opt-in -->
+    <div class="field-group">
+      <label class="chk-label">
+        <input type="checkbox" id="sms_opt_in" name="sms_opt_in"> Opt in to receive text messages
+      </label>
+    </div>
+
+    <!-- Notes toggle -->
+    <div class="toggle-row">
+      <label class="toggle-label"><input type="checkbox" id="note_chk"> Add Note?</label>
+    </div>
+    <div id="notes_row" class="sor-hidden">
+      <div class="field-group">
+        <label for="form_notes_and_availability">Notes</label>
+        <textarea id="form_notes_and_availability" name="form_notes_and_availability" placeholder="Notes and availability..."></textarea>
+      </div>
+    </div>
+
+    <!-- Hidden: lead_source -->
+    <input type="hidden" id="lead_source" name="lead_source" value="Local">
+    <!-- Hidden: number_of_students -->
+    <input type="hidden" id="number_of_students" name="number_of_students" value="1">
+
+    <button type="submit" class="submit-btn" id="submit_btn">Submit Lead</button>
+
+    <div id="status_msg"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  // ══════════════════════════════════════
+  // LOCATIONS DATA
+  // ══════════════════════════════════════
+  var LOCATIONS = [
+    {v:'Austin456',l:'Austin (Test)'},{v:'Boulder123',l:'Boulder (Test)'},{v:'Denver789',l:'Denver (Test)'},{v:'Fayetteville521',l:'Fayetteville (Test)'},{v:'TestSchool001',l:'Test School 001'},{v:'TestSchool002',l:'Test School 002'},{v:'CA - San Ramon',l:'CA - San Ramon'},{v:'CA - Berkeley',l:'CA - Berkeley'},{v:'CA - San Mateo',l:'CA - San Mateo'},{v:'CA - Palo Alto',l:'CA - Palo Alto'},{v:'CA - Vacaville',l:'CA - Vacaville'},{v:'CA - San Jose',l:'CA - San Jose'},{v:'AR - Bentonville/Rogers',l:'AR - Bentonville/Rogers'},{v:'AR - Fayetteville',l:'AR - Fayetteville'},{v:'AZ - Ahwatukee',l:'AZ - Ahwatukee'},{v:'AZ - Gilbert',l:'AZ - Gilbert'},{v:'AZ - Scottsdale',l:'AZ - Scottsdale'},{v:'CA - Burbank',l:'CA - Burbank'},{v:'CA - Del Mar',l:'CA - Del Mar'},{v:'CA - Elk Grove',l:'CA - Elk Grove'},{v:'CA - Encinitas',l:'CA - Encinitas'},{v:'CA - Fairfax District LA',l:'CA - Fairfax District LA'},{v:'CA - Huntington Beach',l:'CA - Huntington Beach'},{v:'CA - Oceanside',l:'CA - Oceanside'},{v:'CA - Otay Ranch',l:'CA - Otay Ranch'},{v:'CA - Pasadena',l:'CA - Pasadena'},{v:'CA - Rancho Santa Margarita',l:'CA - Rancho Santa Margarita'},{v:'CA - Roseville',l:'CA - Roseville'},{v:'CA - San Diego',l:'CA - San Diego'},{v:'CA - Santa Ana',l:'CA - Santa Ana'},{v:'CA - Santa Clarita',l:'CA - Santa Clarita'},{v:'CA - Santa Rosa',l:'CA - Santa Rosa'},{v:'CA - Scripps Ranch',l:'CA - Scripps Ranch'},{v:'CA - South Bay L.A.',l:'CA - South Bay L.A.'},{v:'CA - Temecula',l:'CA - Temecula'},{v:'CA - Tustin',l:'CA - Tustin'},{v:'CA - Venice',l:'CA - Venice'},{v:'CA - West LA',l:'CA - West LA'},{v:'CA - Woodland Hills',l:'CA - Woodland Hills'},{v:'CO - Aurora',l:'CO - Aurora'},{v:'CO - Boulder',l:'CO - Boulder'},{v:'CO - Broomfield',l:'CO - Broomfield'},{v:'CO - Colorado Springs',l:'CO - Colorado Springs'},{v:'CO - Denver',l:'CO - Denver'},{v:'CO - Fort Collins',l:'CO - Fort Collins'},{v:'CO - Golden/Lakewood',l:'CO - Golden/Lakewood'},{v:'CO - Littleton',l:'CO - Littleton'},{v:'CT - Fairfield',l:'CT - Fairfield'},{v:'CT - Greenwich',l:'CT - Greenwich'},{v:'CT - Madison',l:'CT - Madison'},{v:'CT - New Canaan',l:'CT - New Canaan'},{v:'CT - Ridgefield',l:'CT - Ridgefield'},{v:'CT - West Hartford',l:'CT - West Hartford'},{v:'DC - Washington DC / Cleveland Park',l:'DC - Washington DC / Cleveland Park'},{v:'DE - Hockessin',l:'DE - Hockessin'},{v:'FL - Boca Raton',l:'FL - Boca Raton'},{v:'FL - Coral Gables',l:'FL - Coral Gables'},{v:'FL - Coral Springs',l:'FL - Coral Springs'},{v:'FL - Fort Lauderdale',l:'FL - Fort Lauderdale'},{v:'FL - Fort Myers',l:'FL - Fort Myers'},{v:'FL - Miami',l:'FL - Miami'},{v:'FL - North Miami',l:'FL - North Miami'},{v:'FL - North Palm Beach',l:'FL - North Palm Beach'},{v:'FL - Orlando',l:'FL - Orlando'},{v:'FL - Oviedo',l:'FL - Oviedo'},{v:'FL - Pompano Beach',l:'FL - Pompano Beach'},{v:'FL - South Palm Beach',l:'FL - South Palm Beach'},{v:'FL - St. Petersburg',l:'FL - St. Petersburg'},{v:'FL - Tampa',l:'FL - Tampa'},{v:'FL - Tampa North',l:'FL - Tampa North'},{v:'FL - West Broward',l:'FL - West Broward'},{v:'GA - Atlanta',l:'GA - Atlanta'},{v:'GA - Buford',l:'GA - Buford'},{v:'GA - East Cobb',l:'GA - East Cobb'},{v:'GA - Johns Creek',l:'GA - Johns Creek'},{v:'GA - Snellville',l:'GA - Snellville'},{v:'GA - West Cobb',l:'GA - West Cobb'},{v:'IA - Cedar Rapids/Marion',l:'IA - Cedar Rapids/Marion'},{v:'IA - West Des Moines',l:'IA - West Des Moines'},{v:'IL - Andersonville',l:'IL - Andersonville'},{v:'IL - Arlington Heights',l:'IL - Arlington Heights'},{v:'IL - Barrington',l:'IL - Barrington'},{v:'IL - Chicago',l:'IL - Chicago'},{v:'IL - Chicago West',l:'IL - Chicago West'},{v:'IL - Elmhurst',l:'IL - Elmhurst'},{v:'IL - Evanston',l:'IL - Evanston'},{v:'IL - Geneva',l:'IL - Geneva'},{v:'IL - Glen Ellyn',l:'IL - Glen Ellyn'},{v:'IL - Glenbrook',l:'IL - Glenbrook'},{v:'IL - Highwood',l:'IL - Highwood'},{v:'IL - Hinsdale',l:'IL - Hinsdale'},{v:'IL - Libertyville',l:'IL - Libertyville'},{v:'IL - Mokena',l:'IL - Mokena'},{v:'IL - Naperville',l:'IL - Naperville'},{v:'IL - Oak Park',l:'IL - Oak Park'},{v:'IL - Park Ridge',l:'IL - Park Ridge'},{v:'IL - Plainfield',l:'IL - Plainfield'},{v:'IL - Schaumburg',l:'IL - Schaumburg'},{v:'IN - Carmel',l:'IN - Carmel'},{v:'IN - Fishers',l:'IN - Fishers'},{v:'IN - Fort Wayne',l:'IN - Fort Wayne'},{v:'KS - Overland Park',l:'KS - Overland Park'},{v:'KY - Louisville',l:'KY - Louisville'},{v:'KY - Northern Kentucky',l:'KY - Northern Kentucky'},{v:'LA - Baton Rouge',l:'LA - Baton Rouge'},{v:'LA - Lafayette',l:'LA - Lafayette'},{v:'LA - Metairie/New Orleans',l:'LA - Metairie/New Orleans'},{v:'MA - Attleboro',l:'MA - Attleboro'},{v:'MA - Natick',l:'MA - Natick'},{v:'MA - Norwood/Walpole',l:'MA - Norwood/Walpole'},{v:'MA - Seekonk',l:'MA - Seekonk'},{v:'MA - Wakefield',l:'MA - Wakefield'},{v:'MA - Watertown',l:'MA - Watertown'},{v:'MD - Annapolis',l:'MD - Annapolis'},{v:'MD - Baltimore',l:'MD - Baltimore'},{v:'MD - Columbia',l:'MD - Columbia'},{v:'MD - Gambrills',l:'MD - Gambrills'},{v:'MD - Silver Spring',l:'MD - Silver Spring'},{v:'MI - Ann Arbor',l:'MI - Ann Arbor'},{v:'MI - Canton',l:'MI - Canton'},{v:'MI - East Lansing',l:'MI - East Lansing'},{v:'MI - Farmington',l:'MI - Farmington'},{v:'MI - Rochester',l:'MI - Rochester'},{v:'MN - Eden Prairie',l:'MN - Eden Prairie'},{v:'MN - St. Paul',l:'MN - St. Paul'},{v:'MO - Ballwin',l:'MO - Ballwin'},{v:'MO - Kansas City',l:'MO - Kansas City'},{v:'MO - Kirkwood',l:'MO - Kirkwood'},{v:"MO - Lee's Summit",l:"MO - Lee's Summit"},{v:'NC - Cary',l:'NC - Cary'},{v:'NC - Chapel Hill',l:'NC - Chapel Hill'},{v:'NC - Charlotte',l:'NC - Charlotte'},{v:'NC - Cornelius',l:'NC - Cornelius'},{v:'NC - Raleigh',l:'NC - Raleigh'},{v:'NC - Wake Forest',l:'NC - Wake Forest'},{v:'NE - Omaha',l:'NE - Omaha'},{v:'NJ - Brick',l:'NJ - Brick'},{v:'NJ - Chatham',l:'NJ - Chatham'},{v:'NJ - Cherry Hill',l:'NJ - Cherry Hill'},{v:'NJ - Clark',l:'NJ - Clark'},{v:'NJ - Cresskill',l:'NJ - Cresskill'},{v:'NJ - Deptford',l:'NJ - Deptford'},{v:'NJ - East Brunswick',l:'NJ - East Brunswick'},{v:'NJ - Hoboken',l:'NJ - Hoboken'},{v:'NJ - Marlboro',l:'NJ - Marlboro'},{v:'NJ - Montclair',l:'NJ - Montclair'},{v:'NJ - Princeton',l:'NJ - Princeton'},{v:'NJ - Randolph',l:'NJ - Randolph'},{v:'NJ - Red Bank',l:'NJ - Red Bank'},{v:'NJ - Somerville',l:'NJ - Somerville'},{v:'NJ - Waldwick',l:'NJ - Waldwick'},{v:'NJ - Wayne',l:'NJ - Wayne'},{v:'NM - Albuquerque',l:'NM - Albuquerque'},{v:'NV - Green Valley',l:'NV - Green Valley'},{v:'NV - Las Vegas West',l:'NV - Las Vegas West'},{v:'NY - Albany',l:'NY - Albany'},{v:'NY - Beacon',l:'NY - Beacon'},{v:'NY - Bedford',l:'NY - Bedford'},{v:'NY - Brooklyn',l:'NY - Brooklyn'},{v:'NY - Farmingdale',l:'NY - Farmingdale'},{v:'NY - Huntington',l:'NY - Huntington'},{v:'NY - Mamaroneck',l:'NY - Mamaroneck'},{v:'NY - New York',l:'NY - New York'},{v:'NY - Orangeburg',l:'NY - Orangeburg'},{v:'NY - Port Jefferson',l:'NY - Port Jefferson'},{v:'NY - Queens',l:'NY - Queens'},{v:'NY - Rockville Centre',l:'NY - Rockville Centre'},{v:'NY - Roslyn',l:'NY - Roslyn'},{v:'NY - Syosset/Oyster Bay',l:'NY - Syosset/Oyster Bay'},{v:'NY - White Plains',l:'NY - White Plains'},{v:'NY - Williamsburg',l:'NY - Williamsburg'},{v:'OH - Cincinnati',l:'OH - Cincinnati'},{v:'OH - Cleveland West',l:'OH - Cleveland West'},{v:'OH - Dublin',l:'OH - Dublin'},{v:'OH - Gahanna',l:'OH - Gahanna'},{v:'OH - Highland Heights',l:'OH - Highland Heights'},{v:'OH - Mason',l:'OH - Mason'},{v:'OH - Strongsville',l:'OH - Strongsville'},{v:'OK - Edmond',l:'OK - Edmond'},{v:'OK - Oklahoma City',l:'OK - Oklahoma City'},{v:'OK - Tulsa / Broken Arrow',l:'OK - Tulsa / Broken Arrow'},{v:'OR - Lake Oswego',l:'OR - Lake Oswego'},{v:'OR - Portland',l:'OR - Portland'},{v:'PA - Allentown',l:'PA - Allentown'},{v:'PA - Downingtown',l:'PA - Downingtown'},{v:'PA - Doylestown',l:'PA - Doylestown'},{v:'PA - Easton',l:'PA - Easton'},{v:'PA - Fort Washington',l:'PA - Fort Washington'},{v:'PA - Main Lane',l:'PA - Main Lane'},{v:'PA - Newtown',l:'PA - Newtown'},{v:'PA - Philadelphia',l:'PA - Philadelphia'},{v:'PA - South Hills',l:'PA - South Hills'},{v:'PA - Wexford',l:'PA - Wexford'},{v:'RI - North Providence',l:'RI - North Providence'},{v:'TN - Franklin',l:'TN - Franklin'},{v:'TN - Germantown',l:'TN - Germantown'},{v:'TN - Knoxville',l:'TN - Knoxville'},{v:'TN - Memphis',l:'TN - Memphis'},{v:'TN - Nashville',l:'TN - Nashville'},{v:'TN - Wolfchase',l:'TN - Wolfchase'},{v:'TX - Austin',l:'TX - Austin'},{v:'TX - Bryan/College Station',l:'TX - Bryan/College Station'},{v:'TX - Champion Forest',l:'TX - Champion Forest'},{v:'TX - Clear Lake',l:'TX - Clear Lake'},{v:'TX - Cypress',l:'TX - Cypress'},{v:'TX - Dallas',l:'TX - Dallas'},{v:'TX - Flower Mound',l:'TX - Flower Mound'},{v:'TX - Fort Worth',l:'TX - Fort Worth'},{v:'TX - Frisco',l:'TX - Frisco'},{v:'TX - Katy',l:'TX - Katy'},{v:'TX - Kingwood',l:'TX - Kingwood'},{v:'TX - Lubbock',l:'TX - Lubbock'},{v:'TX - Mansfield',l:'TX - Mansfield'},{v:'TX - McAllen',l:'TX - McAllen'},{v:'TX - McKinney',l:'TX - McKinney'},{v:'TX - Memorial',l:'TX - Memorial'},{v:'TX - New Braunfels',l:'TX - New Braunfels'},{v:'TX - Pearland',l:'TX - Pearland'},{v:'TX - Plano',l:'TX - Plano'},{v:'TX - Rockwall',l:'TX - Rockwall'},{v:'TX - Round Rock',l:'TX - Round Rock'},{v:'TX - San Antonio',l:'TX - San Antonio'},{v:'TX - Southlake/Keller',l:'TX - Southlake/Keller'},{v:'TX - Spring',l:'TX - Spring'},{v:'TX - Sugar Land',l:'TX - Sugar Land'},{v:'TX - SW Austin',l:'TX - SW Austin'},{v:'TX - The Woodlands',l:'TX - The Woodlands'},{v:'TX - West University Place',l:'TX - West University Place'},{v:'UT - Sandy',l:'UT - Sandy'},{v:'VA - Alexandria',l:'VA - Alexandria'},{v:'VA - Ashburn',l:'VA - Ashburn'},{v:'VA - Chesapeake',l:'VA - Chesapeake'},{v:'VA - Haymarket',l:'VA - Haymarket'},{v:'VA - Midlothian',l:'VA - Midlothian'},{v:'VA - Short Pump',l:'VA - Short Pump'},{v:'VA - Vienna',l:'VA - Vienna'},{v:'VA - Virginia Beach',l:'VA - Virginia Beach'},{v:'WA - Bellevue',l:'WA - Bellevue'},{v:'WA - Issaquah',l:'WA - Issaquah'},{v:'WA - Lynnwood',l:'WA - Lynnwood'},{v:'WA - Seattle',l:'WA - Seattle'},{v:'WA - West Seattle',l:'WA - West Seattle'},{v:'WI - Shorewood',l:'WI - Shorewood'},{v:'AU - Balmain',l:'AU - Balmain'},{v:'AU - Macarthur',l:'AU - Macarthur'},{v:'AU - Perth',l:'AU - Perth'},{v:'AU - Sutherland',l:'AU - Sutherland'},{v:'BR - Alphaville',l:'BR - Alphaville'},{v:'BR - Alto da Boa Vista',l:'BR - Alto da Boa Vista'},{v:'BR - Analia Franco',l:'BR - Analia Franco'},{v:'BR - Barra da Tijuca',l:'BR - Barra da Tijuca'},{v:'BR - Brooklin-Campo Belo',l:'BR - Brooklin-Campo Belo'},{v:'BR - Campinas',l:'BR - Campinas'},{v:'BR - EM&T',l:'BR - EM&T'},{v:'BR - Florianopolis',l:'BR - Florianopolis'},{v:'BR - Guarulhos',l:'BR - Guarulhos'},{v:'BR - Higienopolis',l:'BR - Higienopolis'},{v:'BR - Ipanema',l:'BR - Ipanema'},{v:'BR - Itaim-Vila Olimpia',l:'BR - Itaim-Vila Olimpia'},{v:'BR - Jundiai',l:'BR - Jundiai'},{v:'BR - Perdizes',l:'BR - Perdizes'},{v:'BR - Piracicaba',l:'BR - Piracicaba'},{v:'BR - Porto Velho',l:'BR - Porto Velho'},{v:'BR - Ribeirão Preto',l:'BR - Ribeirão Preto'},{v:'BR - Santa Cruz-Saude',l:'BR - Santa Cruz-Saude'},{v:'BR - Santana',l:'BR - Santana'},{v:'BR - Santo Antonio',l:'BR - Santo Antonio'},{v:'BR - Sao Caetano do Sul',l:'BR - Sao Caetano do Sul'},{v:'BR - Sao Paulo Jardins',l:'BR - Sao Paulo Jardins'},{v:'BR - Sao Paulo Moema',l:'BR - Sao Paulo Moema'},{v:'BR - Swiss Park',l:'BR - Swiss Park'},{v:'BR - Vila Mariana',l:'BR - Vila Mariana'},{v:'CA - Calgary',l:'CA - Calgary'},{v:'CA - Calgary South',l:'CA - Calgary South'},{v:'CA - Markham',l:'CA - Markham'},{v:'CA - Orleans',l:'CA - Orleans'},{v:'CA - Regina',l:'CA - Regina'},{v:"CA - St. John's",l:"CA - St. John's"},{v:'CA - Winnipeg',l:'CA - Winnipeg'},{v:'CL - Chicureo',l:'CL - Chicureo'},{v:'CL - Concon-Renaca',l:'CL - Concon-Renaca'},{v:'CL - Los Domenicos',l:'CL - Los Domenicos'},{v:'CL - Santiago',l:'CL - Santiago'},{v:'CL - Vitacura',l:'CL - Vitacura'},{v:'MX - Guadalajara',l:'MX - Guadalajara'},{v:'MX - Metepec',l:'MX - Metepec'},{v:'MX - Pedregal',l:'MX - Pedregal'},{v:'MX - Saltillo',l:'MX - Saltillo'},{v:'MX - San Pedro',l:'MX - San Pedro'},{v:'MX - Via Cordillera',l:'MX - Via Cordillera'},{v:'PE - Lima',l:'PE - Lima'},{v:'PH - Philippines',l:'PH - Philippines'},{v:'PY - Asuncion',l:'PY - Asuncion'},{v:'ZA - Claremont',l:'ZA - Claremont'},{v:'Demo',l:'Demo'}
+  ];
+
+  // ══════════════════════════════════════
+  // BIRTHDAY vs AGE TOGGLE
+  // ══════════════════════════════════════
+  document.querySelectorAll('input[name="age_or_bday"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      if (this.value === 'birthday') {
+        document.getElementById('bday_row').classList.remove('sor-hidden');
+        document.getElementById('age_row').classList.add('sor-hidden');
+        document.getElementById('student_age').value = '';
+      } else {
+        document.getElementById('bday_row').classList.add('sor-hidden');
+        document.getElementById('age_row').classList.remove('sor-hidden');
+        document.getElementById('date_of_birth').value = '';
+      }
+    });
+  });
+
+  // ══════════════════════════════════════
+  // ADULT STUDENT TOGGLE
+  // ══════════════════════════════════════
+  document.getElementById('adult_chk').addEventListener('change', function() {
+    var isAdult = this.checked;
+    var nameRow = document.getElementById('student1_name_row');
+    var bdayRow = document.getElementById('bday_row');
+    var ageRow = document.getElementById('age_row');
+    var ageToggle = document.getElementById('age_toggle_row');
+    var lblFirst = document.getElementById('lbl_firstname');
+    var lblLast = document.getElementById('lbl_lastname');
+
+    if (isAdult) {
+      nameRow.classList.add('sor-hidden');
+      bdayRow.classList.add('sor-hidden');
+      ageRow.classList.add('sor-hidden');
+      ageToggle.classList.add('sor-hidden');
+      lblFirst.textContent = 'Student First Name';
+      lblLast.textContent = 'Student Last Name';
+      document.getElementById('student_first_name').value = '';
+      document.getElementById('student_last_name').value = '';
+      document.getElementById('date_of_birth').value = '';
+      document.getElementById('student_age').value = '';
+    } else {
+      nameRow.classList.remove('sor-hidden');
+      ageToggle.classList.remove('sor-hidden');
+      var sel = document.querySelector('input[name="age_or_bday"]:checked');
+      if (sel && sel.value === 'age') { ageRow.classList.remove('sor-hidden'); }
+      else { bdayRow.classList.remove('sor-hidden'); }
+      lblFirst.textContent = 'Parent First Name';
+      lblLast.textContent = 'Parent Last Name';
+    }
+  });
+
+  // ══════════════════════════════════════
+  // MULTI-STUDENT: ADD / REMOVE
+  // ══════════════════════════════════════
+  var studentCount = 1;
+
+  document.getElementById('add_student_link').addEventListener('click', function() {
+    for (var n = 2; n <= 4; n++) {
+      var grp = document.getElementById('student' + n + '_group');
+      if (grp.classList.contains('sor-hidden')) {
+        grp.classList.remove('sor-hidden');
+        studentCount = n;
+        document.getElementById('number_of_students').value = n;
+        break;
+      }
+    }
+    if (studentCount >= 4) document.getElementById('add_student_div').classList.add('sor-hidden');
+  });
+
+  window.removeStudent = function(n) {
+    var grp = document.getElementById('student' + n + '_group');
+    grp.classList.add('sor-hidden');
+    // Clear fields
+    ['student_first_name_' + n, 'student_last_name_' + n, 'instrument_' + n, 'area_of_interest_' + n].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    // Recalculate
+    studentCount = 1;
+    for (var i = 2; i <= 4; i++) {
+      if (!document.getElementById('student' + i + '_group').classList.contains('sor-hidden')) studentCount = i;
+    }
+    document.getElementById('number_of_students').value = studentCount;
+    document.getElementById('add_student_div').classList.remove('sor-hidden');
+  };
+
+  // ══════════════════════════════════════
+  // NOTES TOGGLE
+  // ══════════════════════════════════════
+  document.getElementById('note_chk').addEventListener('change', function() {
+    document.getElementById('notes_row').classList.toggle('sor-hidden', !this.checked);
+    if (!this.checked) document.getElementById('form_notes_and_availability').value = '';
+  });
+
+  // ══════════════════════════════════════
+  // SEARCHABLE LOCATION DROPDOWN
+  // ══════════════════════════════════════
+  var locInput = document.getElementById('loc_input');
+  var locList = document.getElementById('loc_list');
+  var locHidden = document.getElementById('location');
+  var MAX_RESULTS = 20;
+
+  function filterLocs(q) {
+    locList.innerHTML = '';
+    q = (q || '').toLowerCase().trim();
+    if (!q) {
+      locList.innerHTML = '<div class="searchdrop-empty">Start typing to search...</div>';
+      locList.style.display = 'block';
+      return;
+    }
+    var count = 0;
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < LOCATIONS.length && count < MAX_RESULTS; i++) {
+      if (LOCATIONS[i].l.toLowerCase().indexOf(q) >= 0) {
+        count++;
+        var item = document.createElement('div');
+        item.className = 'searchdrop-item';
+        item.textContent = LOCATIONS[i].l;
+        item.setAttribute('data-val', LOCATIONS[i].v);
+        item.setAttribute('data-lbl', LOCATIONS[i].l);
+        frag.appendChild(item);
+      }
+    }
+    if (count === 0) locList.innerHTML = '<div class="searchdrop-empty">No locations found</div>';
+    else locList.appendChild(frag);
+    locList.style.display = 'block';
+  }
+
+  locList.addEventListener('mousedown', function(e) {
+    var item = e.target.closest('.searchdrop-item');
+    if (!item) return;
+    e.preventDefault();
+    locInput.value = item.getAttribute('data-lbl');
+    locHidden.value = item.getAttribute('data-val');
+    locList.style.display = 'none';
+  });
+
+  locInput.addEventListener('focus', function() { filterLocs(this.value); });
+  locInput.addEventListener('input', function() { locHidden.value = ''; filterLocs(this.value); });
+  locInput.addEventListener('blur', function() { setTimeout(function() { locList.style.display = 'none'; }, 200); });
+  locInput.addEventListener('keydown', function(e) { if (e.key === 'Escape') { locList.style.display = 'none'; locInput.blur(); } });
+
+  // ══════════════════════════════════════
+  // FORM SUBMISSION via HubSpot Forms API
+  // ══════════════════════════════════════
+  var PORTAL_ID = '6841203';
+  var FORM_ID = 'a25f8d86-3e36-4f89-ab6c-55c2235ddd37';
+  var API_URL = 'https://api.hsforms.com/submissions/v3/integration/submit/' + PORTAL_ID + '/' + FORM_ID;
+
+  document.getElementById('leadForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Clear previous errors
+    document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
+    document.querySelectorAll('.error-msg').forEach(function(el) { el.remove(); });
+
+    // Validate email
+    var emailField = document.getElementById('email');
+    var emailVal = emailField.value.trim();
+    if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      emailField.parentNode.classList.add('field-error');
+      var err = document.createElement('div');
+      err.className = 'error-msg';
+      err.textContent = 'Please enter a valid email address.';
+      emailField.parentNode.appendChild(err);
+      emailField.focus();
+      return;
+    }
+
+    // Build fields array — only include non-empty values
+    var fields = [];
+    var fieldNames = [
+      'email', 'firstname', 'lastname', 'phone',
+      'student_first_name', 'student_last_name', 'date_of_birth', 'student_age',
+      'instrument', 'area_of_interest', 'number_of_students',
+      'student_first_name_2', 'student_last_name_2', 'instrument_2', 'area_of_interest_2',
+      'student_first_name_3', 'student_last_name_3', 'instrument_3', 'area_of_interest_3',
+      'student_first_name_4', 'student_last_name_4', 'instrument_4', 'area_of_interest_4',
+      'location', 'marketing_source_category', 'lead_source',
+      'form_notes_and_availability'
+    ];
+
+    fieldNames.forEach(function(name) {
+      var el = document.getElementById(name);
+      if (el && el.value.trim()) {
+        fields.push({ name: name, value: el.value.trim() });
+      }
+    });
+
+    // SMS opt-in (boolean checkbox)
+    var smsEl = document.getElementById('sms_opt_in');
+    fields.push({ name: 'sms_opt_in', value: smsEl.checked ? 'true' : 'false' });
+
+    // Build payload
+    var payload = {
+      fields: fields,
+      context: {
+        pageUri: window.location.href,
+        pageName: 'Register a Lead - Dashboard'
+      }
+    };
+
+    // Disable submit
+    var btn = document.getElementById('submit_btn');
+    var statusDiv = document.getElementById('status_msg');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    statusDiv.innerHTML = '';
+
+    console.log('SOR: submitting payload', JSON.stringify(payload));
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(resp) {
+      console.log('SOR: response status', resp.status);
+      // Read body as text first (safe — never crashes)
+      return resp.text().then(function(body) {
+        console.log('SOR: response body', body);
+        return { status: resp.status, ok: resp.ok, body: body };
+      });
+    })
+    .then(function(result) {
+      if (result.ok || result.status === 200 || result.status === 204 || result.status === 302) {
+        statusDiv.innerHTML = '<div class="status-msg status-success">Lead submitted successfully!</div>';
+        // Reset form after short delay
+        setTimeout(function() {
+          document.getElementById('leadForm').reset();
+          locInput.value = '';
+          locHidden.value = '';
+          [2, 3, 4].forEach(function(n) {
+            document.getElementById('student' + n + '_group').classList.add('sor-hidden');
+          });
+          document.getElementById('notes_row').classList.add('sor-hidden');
+          document.getElementById('add_student_div').classList.remove('sor-hidden');
+          document.getElementById('bday_row').classList.remove('sor-hidden');
+          document.getElementById('age_row').classList.add('sor-hidden');
+          document.getElementById('age_toggle_row').classList.remove('sor-hidden');
+          document.getElementById('student1_name_row').classList.remove('sor-hidden');
+          document.getElementById('lbl_firstname').textContent = 'Parent First Name';
+          document.getElementById('lbl_lastname').textContent = 'Parent Last Name';
+          document.getElementById('number_of_students').value = '1';
+          studentCount = 1;
+          statusDiv.innerHTML = '';
+        }, 2000);
+      } else {
+        console.error('SOR submit error:', result.status, result.body);
+        statusDiv.innerHTML = '<div class="status-msg status-error">Error (' + result.status + '). Please try again.</div>';
+      }
+    })
+    .catch(function(err) {
+      console.error('SOR fetch error:', err);
+      statusDiv.innerHTML = '<div class="status-msg status-error">Network error. Please check your connection.</div>';
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = 'Submit Lead';
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
